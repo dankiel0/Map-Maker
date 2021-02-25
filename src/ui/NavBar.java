@@ -15,7 +15,7 @@ public class NavBar {
 		JMenu menu;
 		JMenuItem menuItem;
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////// creates file menu
 		menu = new JMenu("File");
 		navBar.add(menu);
 		
@@ -23,6 +23,11 @@ public class NavBar {
 		menu.add(menuItem);
 		
 		menuItem = new JMenuItem("Open Existing Project");
+		menu.add(menuItem);
+		
+		menu.addSeparator();
+		
+		menuItem = new JMenuItem("Open Tileset");
 		menu.add(menuItem);
 		
 		menu.addSeparator();
@@ -39,7 +44,7 @@ public class NavBar {
 		menuItem.addActionListener((ActionEvent e) -> System.exit(0));
 		menu.add(menuItem);
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////// creates edit menu
 		menu = new JMenu("Edit");
 		navBar.add(menu);
 		
@@ -57,14 +62,17 @@ public class NavBar {
 		menuItem = new JMenuItem("Set Tiles");
 		menu.add(menuItem);
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-		menu = new JMenu("Test");
+		////////////////////////////////////////////////// creates test menu
+		menu = new JMenu("View");
 		navBar.add(menu);
 		
 		menuItem = new JMenuItem("Explore Map");
 		menu.add(menuItem);
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		menuItem = new JMenuItem("Show Full Map");
+		menu.add(menuItem);
+		
+		////////////////////////////////////////////////// creates help menu
 		menu = new JMenu("Help");
 		navBar.add(menu);
 		
