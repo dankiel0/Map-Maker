@@ -5,44 +5,47 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import tile.Tile;
+import ui.Ptileset;
 
 // the tile set that stores the sprites and whatnot.
 public final class Tileset implements Renderable {
-	// the width and height of the original tile set.
-	private final int WIDTH;
-	private final int HEIGHT;
+	private final int tilesetWidth, tilesetHeight;
 	
-	// the number of tiles that line the x and y axes.
-	private final int TILES_X;
-	private final int TILES_Y;
+	private final int tilesAlongXAxis, tilesAlongYAxis;
 	
-	// the individual tiles that are in the tile set.
+	// the tiles that are in the tile set.
 	private final BufferedImage[] tiles;
 	
 	// the tile index that is selected.
-	private int selectedTileIndex = 10;
+	private int selectedTileIndex;
 	
 	public Tileset(BufferedImage tileset) {
-		this.WIDTH = tileset.getWidth();
-		this.HEIGHT = tileset.getHeight();
+		this.tilesetWidth = tileset.getWidth();
+		this.tilesetHeight = tileset.getHeight();
 		
 		// calculates the amount of tiles in x and y axes.
-		this.TILES_X = this.WIDTH / Tile.getWidth();
-		this.TILES_Y = this.HEIGHT / Tile.getHeight();
+		this.tilesAlongXAxis = this.tilesetWidth / Tile.getWidth();
+		this.tilesAlongYAxis = this.tilesetHeight / Tile.getHeight();
 		
 		// the size is the width * height.
-		this.tiles = new BufferedImage[this.TILES_X * this.TILES_Y];
+		this.tiles = new BufferedImage[this.tilesAlongXAxis * this.tilesAlongYAxis];
 		
 		// cuts up the tileset and stores it into the array.
 		int counter = 0;
-		// y is the outer loop so the tiles are read horizontally.
-		for(int y = 0; y < this.HEIGHT; y += Tile.getHeight())
-			for(int x = 0; x < this.WIDTH; x += Tile.getWidth())
-				this.tiles[counter++] = tileset.getSubimage(x, y, Tile.getWidth(), Tile.getHeight());
+		// reads horizontally.
+		for (int y = 0; y < this.tilesetHeight; y += Tile.getHeight())
+			for (int x = 0; x < this.tilesetWidth; x += Tile.getWidth())
+				this.tiles[ counter++ ] = tileset.getSubimage(x, y, Tile.getWidth(), Tile.getHeight());
 	}
 	
-	public void setSelectedTileIndex(int selectedTileIndex) {
-		this.selectedTileIndex = selectedTileIndex;
+	public void setSelectedTileIndex(int mouseX, int mouseY) {
+		if (mouseX > this.tilesetWidth || mouseX < 0 || mouseY > this.tilesetHeight || mouseY < Tile.getHeight() * 2)
+			return;
+		
+		int x = mouseX / Tile.getWidth();
+		int y = mouseY / Tile.getHeight() - 2;
+		
+		this.selectedTileIndex = y * this.tilesAlongXAxis + x;
 	}
 	
 	public int getSelectedTileIndex() {
@@ -50,25 +53,24 @@ public final class Tileset implements Renderable {
 	}
 	
 	public BufferedImage getTile(int index) {
-		return this.tiles[index];
+		return this.tiles[ index ];
 	}
 	
-	// renders the tile set to the panel.
 	@Override
 	public void render(Graphics graphics, int offsetX, int offsetY) {
 		int counter = 0;
-		while(counter < this.tiles.length) {
+		while (counter < this.tiles.length) {
 			// calculates the x and y of each tile using only the tile index.
-			int x = (counter % this.TILES_X) * Tile.getWidth();
-			int y = (counter / this.TILES_X) * Tile.getHeight();
+			int x = counter % this.tilesAlongXAxis * Tile.getWidth();
+			int y = counter / this.tilesAlongXAxis * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(this.getTile(counter), x + offsetX, y + offsetY + 64, null);
+			graphics.drawImage(this.getTile(counter), x + offsetX, y + offsetY + (Tile.getHeight() * 2), null);
 			
 			// highlights the selected tile.
-			if(counter == this.selectedTileIndex) {
+			if (counter == this.selectedTileIndex) {
 				graphics.setColor(Color.RED);
-				graphics.drawRect(x, y + 64, Tile.getWidth() - 1, Tile.getHeight() - 1);
+				graphics.drawRect(x, y + Tile.getHeight() * 2, Tile.getWidth() - 1, Tile.getHeight() - 1);
 			}
 			
 			counter++;
@@ -76,13 +78,13 @@ public final class Tileset implements Renderable {
 		
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
-		graphics.drawRect(0, 64, this.WIDTH, this.HEIGHT);
+		graphics.drawRect(0, Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
 		
 		// draws background.
-		graphics.setColor(Color.GRAY);
-		graphics.fillRect(0, 0, 640, 64);
+		graphics.setColor(Color.BLACK);
+		graphics.fillRect(0, 0, Ptileset.getW(), Tile.getHeight() * 2);
 		
 		// draws the selected tile in the corner.
-		graphics.drawImage(this.getTile(this.selectedTileIndex), 640/2 - 16, 16, null);
+		graphics.drawImage(this.getTile(this.selectedTileIndex), Ptileset.getW() / 2 - (Tile.getWidth() / 2), Tile.getHeight() / 2, null);
 	}
 }
