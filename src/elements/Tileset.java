@@ -20,7 +20,7 @@ public final class Tileset implements Renderable {
 	private final BufferedImage[] tiles;
 	
 	// the tile index that is selected.
-	private int selectedTileIndex;
+	private int selectedTileIndex = 10;
 	
 	public Tileset(BufferedImage tileset) {
 		this.WIDTH = tileset.getWidth();
@@ -56,9 +56,6 @@ public final class Tileset implements Renderable {
 	// renders the tile set to the panel.
 	@Override
 	public void render(Graphics graphics, int offsetX, int offsetY) {
-		// so that the highlight is red.
-		graphics.setColor(Color.RED);
-		
 		int counter = 0;
 		while(counter < this.tiles.length) {
 			// calculates the x and y of each tile using only the tile index.
@@ -66,16 +63,26 @@ public final class Tileset implements Renderable {
 			int y = (counter / this.TILES_X) * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(this.getTile(counter), x + offsetX, y + offsetY, null);
+			graphics.drawImage(this.getTile(counter), x + offsetX, y + offsetY + 64, null);
 			
 			// highlights the selected tile.
-			if(counter == this.selectedTileIndex)
-				graphics.drawRect(x, y, Tile.getWidth() - 1, Tile.getHeight() - 1);
+			if(counter == this.selectedTileIndex) {
+				graphics.setColor(Color.RED);
+				graphics.drawRect(x, y + 64, Tile.getWidth() - 1, Tile.getHeight() - 1);
+			}
 			
 			counter++;
 		}
 		
+		// draws border around tileset.
+		graphics.setColor(Color.BLACK);
+		graphics.drawRect(0, 64, this.WIDTH, this.HEIGHT);
+		
+		// draws background.
+		graphics.setColor(Color.GRAY);
+		graphics.fillRect(0, 0, 640, 64);
+		
 		// draws the selected tile in the corner.
-		graphics.drawImage(this.getTile(this.selectedTileIndex), 515, 0, null);
+		graphics.drawImage(this.getTile(this.selectedTileIndex), 640/2 - 16, 16, null);
 	}
 }

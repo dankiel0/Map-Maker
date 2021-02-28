@@ -1,9 +1,12 @@
 package src;
 
+import java.awt.FlowLayout;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import ui.MapPanel;
 import ui.NavBar;
 import ui.TilesetPanel;
 
@@ -22,9 +25,11 @@ public class MapMaker {
 	private static void start() {
 		JFrame frame = new JFrame();
 		
+		frame.setLayout(new FlowLayout());
+		
 		frame.setJMenuBar(new NavBar().getInstance());
 		
-//		frame.getContentPane().add(new MapPanel());
+		frame.getContentPane().add(new MapPanel());
 		frame.getContentPane().add(new TilesetPanel());
 		
 		frame.setTitle("Map Maker");

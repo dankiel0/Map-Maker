@@ -62,6 +62,14 @@ public class NavBar {
 		menuItem = new JMenuItem("Set Tiles");
 		menu.add(menuItem);
 		
+		menu.addSeparator();
+		
+		menuItem = new JMenuItem("Reset Map Position");
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Reset Tileset Position");
+		menu.add(menuItem);
+		
 		////////////////////////////////////////////////// creates test menu
 		menu = new JMenu("View");
 		navBar.add(menu);

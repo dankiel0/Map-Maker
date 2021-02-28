@@ -10,7 +10,7 @@ public class MapPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	public MapPanel() {
-		super.setPreferredSize(new Dimension(800, 800));
+		super.setPreferredSize(new Dimension(640, 640));
 		super.setBackground(Color.WHITE);
 	}
 	

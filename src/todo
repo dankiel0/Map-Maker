@@ -5,3 +5,25 @@ solids
 
 menu
 open existing project, create new project, help, credits
+
+completed
+>> displaying tile set
+
+create tile set panel
+>> pressing tiles
+>> moving tile set
+>> opening tile set using menu
+
+(x, y) -> tile index
+
+(32, 32) -> 0
+(0, 0) -> 0
+(16, 0) -> 0
+
+(33, 0) -> 1
+(0, 33) -> tiles_x
+
+x = x / tileWidth - 1;
+y = y / tileHeight - 1;
+
+index = y * width + x

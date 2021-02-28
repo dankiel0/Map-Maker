@@ -3,8 +3,9 @@ package ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
-import javax.swing.JButton;
 import javax.swing.JPanel;
 
 import elements.Tileset;
@@ -15,12 +16,14 @@ public class TilesetPanel extends JPanel {
 	
 	private Tileset tileset = new Tileset(ImageLoader.loadFromDrive("C:\\Users\\khrap\\Desktop\\items.png"));
 	
+	private TilesetML ml = new TilesetML();
+	
 	public TilesetPanel() {
-		super.setPreferredSize(new Dimension(800, 800));
+		super.setPreferredSize(new Dimension(640, 640));
 		super.setBackground(Color.WHITE);
 		
-		super.add(new JButton("add"));
-		super.add(new JButton("remove"));
+		super.addMouseListener(this.ml);
+		super.addMouseMotionListener(this.ml);
 	}
 	
 	@Override
@@ -28,5 +31,12 @@ public class TilesetPanel extends JPanel {
 		super.paintComponent(graphics);
 		
 		tileset.render(graphics, 0, 0);
+	}
+	
+	private class TilesetML extends MouseAdapter {
+		@Override
+		public void mouseClicked(MouseEvent event) {
+			
+		}
 	}
 }
