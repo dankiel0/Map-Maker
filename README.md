@@ -1,2 +1,2 @@
-# MapMaker
-a better version of MapEditor
+# Map-Maker
+An amended version of MapEditor
