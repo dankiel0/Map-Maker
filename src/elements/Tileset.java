@@ -19,6 +19,8 @@ public final class Tileset implements Renderable {
 	// the tile index that is selected.
 	private int selectedTileIndex;
 	
+	private int tilesetX, tilesetY;
+	
 	public Tileset(BufferedImage tileset) {
 		this.tilesetWidth = tileset.getWidth();
 		this.tilesetHeight = tileset.getHeight();
@@ -42,18 +44,20 @@ public final class Tileset implements Renderable {
 		if (mouseX > this.tilesetWidth || mouseX < 0 || mouseY > this.tilesetHeight || mouseY < Tile.getHeight() * 2)
 			return;
 		
-		int x = mouseX / Tile.getWidth();
-		int y = mouseY / Tile.getHeight() - 2;
+		int x = (mouseX - tilesetX) / Tile.getWidth();
+		int y = (mouseY - tilesetY) / Tile.getHeight() - 2;
 		
 		this.selectedTileIndex = y * this.tilesAlongXAxis + x;
 	}
 	
-	public int getSelectedTileIndex() {
-		return this.selectedTileIndex;
-	}
-	
 	public BufferedImage getTile(int index) {
 		return this.tiles[ index ];
+	}
+	
+	public void updatePosition(int mouseX, int mouseY, int mousePressedX, int mousePressedY) {
+		// tilesetX = mouseX - (mouseX - tilesetX)
+		tilesetX = mousePressedX - mouseX;
+		tilesetY = mousePressedY - (mouseY - Tile.getHeight() * 2);
 	}
 	
 	@Override
@@ -65,12 +69,12 @@ public final class Tileset implements Renderable {
 			int y = counter / this.tilesAlongXAxis * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(this.getTile(counter), x + offsetX, y + offsetY + (Tile.getHeight() * 2), null);
+			graphics.drawImage(this.getTile(counter), x + offsetX + tilesetX, y + offsetY + (Tile.getHeight() * 2) + tilesetY, null);
 			
 			// highlights the selected tile.
 			if (counter == this.selectedTileIndex) {
 				graphics.setColor(Color.RED);
-				graphics.drawRect(x, y + Tile.getHeight() * 2, Tile.getWidth() - 1, Tile.getHeight() - 1);
+				graphics.drawRect(x + tilesetX, y + (Tile.getHeight() * 2) + tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);
 			}
 			
 			counter++;
@@ -78,7 +82,7 @@ public final class Tileset implements Renderable {
 		
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
-		graphics.drawRect(0, Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
+		graphics.drawRect(tilesetX, tilesetY + Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
 		
 		// draws background.
 		graphics.setColor(Color.BLACK);

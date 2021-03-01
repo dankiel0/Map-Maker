@@ -19,10 +19,10 @@ public class NavBar {
 		menu = new JMenu("File");
 		navBar.add(menu);
 		
-		menuItem = new JMenuItem("Create New Project");
+		menuItem = new JMenuItem("Create New Map");
 		menu.add(menuItem);
 		
-		menuItem = new JMenuItem("Open Existing Project");
+		menuItem = new JMenuItem("Open Existing Map");
 		menu.add(menuItem);
 		
 		menu.addSeparator();
@@ -77,7 +77,12 @@ public class NavBar {
 		menuItem = new JMenuItem("Explore Map");
 		menu.add(menuItem);
 		
-		menuItem = new JMenuItem("Show Full Map");
+		menu.addSeparator();
+		
+		menuItem = new JMenuItem("Display Full Map");
+		menu.add(menuItem);
+		
+		menuItem = new JMenuItem("Display Full Tileset");
 		menu.add(menuItem);
 		
 		////////////////////////////////////////////////// creates help menu

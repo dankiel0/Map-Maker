@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 import elements.Tileset;
 import resource_loaders.ImageLoader;
@@ -54,10 +55,32 @@ public class Ptileset extends JPanel {
 	}
 	
 	private class MouseListener extends MouseAdapter {
+		private int mousePressedX, mousePressedY;
+		
 		@Override
-		public void mouseClicked(MouseEvent event) {
-			tileset.setSelectedTileIndex(event.getX(), event.getY());
+		public void mouseClicked(MouseEvent e) {
+			tileset.setSelectedTileIndex(e.getX(), e.getY());
 			repaint();
+		}
+		
+		@Override
+		public void mousePressed(MouseEvent e) {
+			if (SwingUtilities.isMiddleMouseButton(e)) {
+				mousePressedX = e.getX();
+				mousePressedY = e.getY();
+			}
+			
+			System.out.println("press");
+		}
+		
+		@Override
+		public void mouseDragged(MouseEvent e) {
+//			System.out.println(mousePressedX + ", " + mousePressedY);
+			
+			if (SwingUtilities.isMiddleMouseButton(e)) {
+				tileset.updatePosition(e.getX(), e.getY(), mousePressedX, mousePressedY);
+				repaint();
+			}
 		}
 	}
 }
