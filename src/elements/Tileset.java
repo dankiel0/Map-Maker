@@ -55,7 +55,6 @@ public final class Tileset implements Renderable {
 	}
 	
 	public void updatePosition(int mouseX, int mouseY, int mousePressedX, int mousePressedY) {
-		// tilesetX = mouseX - (mouseX - tilesetX)
 		tilesetX = mousePressedX - mouseX;
 		tilesetY = mousePressedY - (mouseY - Tile.getHeight() * 2);
 	}
