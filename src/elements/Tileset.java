@@ -18,6 +18,7 @@ public final class Tileset implements Renderable {
 	
 	// the tile index that is selected.
 	private int selectedTileIndex;
+	private int selectedTileX, selectedTileY;
 	
 	private int tilesetX, tilesetY;
 	
@@ -55,9 +56,26 @@ public final class Tileset implements Renderable {
 	}
 	
 	public void updatePosition(int mouseX, int mouseY, int mousePressedX, int mousePressedY) {
-		// tilesetX = mouseX - (mouseX - tilesetX
-		tilesetX = mousePressedX - mouseX;
-		tilesetY = mousePressedY - (mouseY - Tile.getHeight() * 2);
+		
+		tilesetX = mousePressedX;
+		tilesetY = mousePressedY;
+	}
+	
+	private void renderSelectedTile(Graphics graphics) {
+		int x1 = 0, y1 = 0;
+		
+		int w = Ptileset.getW();
+		int h = Tile.getHeight() * 2;
+		
+		// draws background.
+		graphics.setColor(Color.BLACK);
+		graphics.fillRect(x1, y1, w, h);
+		
+		x1 = (Ptileset.getW() - Tile.getWidth()) / 2;
+		y1 = Tile.getHeight() / 2;
+		
+		// draws the selected tile in the corner.
+		graphics.drawImage(this.getTile(this.selectedTileIndex), x1, y1, null);
 	}
 	
 	@Override
@@ -80,15 +98,14 @@ public final class Tileset implements Renderable {
 			counter++;
 		}
 		
+		// draws highlight
+		graphics.setColor(Color.RED);
+		graphics.drawRect(this.selectedTileX + this.tilesetX, this.selectedTileY + this.tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);
+		
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
 		graphics.drawRect(tilesetX, tilesetY + Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
 		
-		// draws background.
-		graphics.setColor(Color.BLACK);
-		graphics.fillRect(0, 0, Ptileset.getW(), Tile.getHeight() * 2);
-		
-		// draws the selected tile in the corner.
-		graphics.drawImage(this.getTile(this.selectedTileIndex), Ptileset.getW() / 2 - (Tile.getWidth() / 2), Tile.getHeight() / 2, null);
+		this.renderSelectedTile(graphics);
 	}
 }

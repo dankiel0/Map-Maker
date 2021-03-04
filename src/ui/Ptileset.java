@@ -75,7 +75,6 @@ public class Ptileset extends JPanel {
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-//			System.out.println(mousePressedX + ", " + mousePressedY);
 			
 			if (SwingUtilities.isMiddleMouseButton(e)) {
 				tileset.updatePosition(e.getX(), e.getY(), mousePressedX, mousePressedY);

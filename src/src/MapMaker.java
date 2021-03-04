@@ -13,13 +13,15 @@ import ui.Ptileset;
 // the start of the application.
 public class MapMaker {
 	public static void main(String[] args) {
-		// set look and feel.
-		try {
-			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
-			e.printStackTrace();
-		}
-		
+		new MapMaker().start();
+	}
+	
+	private void start() {
+		this.initLookAndFeel();
+		this.initUI();
+	}
+	
+	private void initUI() {
 		JFrame frame = new JFrame();
 		
 		frame.setLayout(new FlowLayout());
@@ -35,5 +37,13 @@ public class MapMaker {
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+	}
+	
+	private void initLookAndFeel() {
+		try {
+			UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel");
+		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+			e.printStackTrace();
+		}
 	}
 }
