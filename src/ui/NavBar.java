@@ -115,37 +115,52 @@ public class NavBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch(e.getActionCommand()) {
 		case "Create New Map":
+			
 			break;
 		case "Open Existing Map":
+			
 			break;
 		case "Open Tileset":
+			
 			break;
 		case "Save":
+			
 			break;
 		case "Save As...":
+			
 			break;
 		case "Exit":
 			System.exit(0);
 			break;
 		case "Undo":
+			
 			break;
 		case "Redo":
+			
 			break;
 		case "Set Solids":
+			
 			break;
 		case "Set Tiles":
+			
 			break;
 		case "Reset Map Position":
+			
 			break;
 		case "Reset Tileset Position":
+			
 			break;
 		case "Explore Map":
+			
 			break;
 		case "Display Full Map":
+			
 			break;
 		case "Display Full Tileset":
+			
 			break;
 		case "About Map Maker":
+			
 			break;
 		default:
 			break;

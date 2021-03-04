@@ -92,8 +92,7 @@ public final class Tileset implements Renderable {
 			// highlights the selected tile.
 			if (counter == this.selectedTileIndex) {
 				graphics.setColor(Color.RED);
-				graphics.drawRect(x + tilesetX, y + (Tile.getHeight() * 2) + tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);
-			}
+				graphics.drawRect(x + tilesetX, y + (Tile.getHeight() * 2) + tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);}
 			
 			counter++;
 		}
