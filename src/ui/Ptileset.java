@@ -66,18 +66,15 @@ public class Ptileset extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isMiddleMouseButton(e)) {
-                int x = e.getPoint().x - offset.x;
-                int y = e.getPoint().y - offset.y;
-                
-                Component component = e.getComponent();
-                Point location = component.getLocation();
-                
-                location.x += x;
-                location.y += y;
-                
-                component.setLocation(location);
-//				mousePressedX = e.getX();
-//				mousePressedY = e.getY();
+				int x = e.getPoint().x - offset.x;
+				int y = e.getPoint().y - offset.y;
+				
+				Point location = Ptileset.this.tileset.getTilesetLocation();
+				
+				location.x += x;
+				location.y += y;
+				
+				Ptileset.this.tileset.setTilesetLocation(location);
 			}
 			
 			System.out.println("press");

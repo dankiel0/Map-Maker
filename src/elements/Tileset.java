@@ -2,6 +2,7 @@ package elements;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import tile.Tile;
@@ -20,7 +21,7 @@ public final class Tileset implements Renderable {
 	private int selectedTileIndex;
 	private int selectedTileX, selectedTileY;
 	
-	private int tilesetX, tilesetY;
+	private Point tilesetLocation = new Point();
 	
 	public Tileset(BufferedImage tileset) {
 		this.tilesetWidth = tileset.getWidth();
@@ -45,8 +46,8 @@ public final class Tileset implements Renderable {
 		if (mouseX > this.tilesetWidth || mouseX < 0 || mouseY > this.tilesetHeight || mouseY < Tile.getHeight() * 2)
 			return;
 		
-		int x = (mouseX - tilesetX) / Tile.getWidth();
-		int y = (mouseY - tilesetY) / Tile.getHeight() - 2;
+		int x = (mouseX - tilesetLocation.x) / Tile.getWidth();
+		int y = (mouseY - tilesetLocation.y) / Tile.getHeight() - 2;
 		
 		this.selectedTileIndex = y * this.tilesAlongXAxis + x;
 	}
@@ -55,10 +56,12 @@ public final class Tileset implements Renderable {
 		return this.tiles[ index ];
 	}
 	
-	public void updatePosition(int mouseX, int mouseY, int mousePressedX, int mousePressedY) {
-		
-		tilesetX = mousePressedX;
-		tilesetY = mousePressedY;
+	public Point getTilesetLocation() {
+		return this.tilesetLocation;
+	}
+	
+	public void setTilesetLocation(Point newLocation) {
+		this.tilesetLocation = newLocation;
 	}
 	
 	private void renderSelectedTile(Graphics graphics) {
@@ -87,23 +90,23 @@ public final class Tileset implements Renderable {
 			int y = counter / this.tilesAlongXAxis * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(this.getTile(counter), x + offsetX + tilesetX, y + offsetY + (Tile.getHeight() * 2) + tilesetY, null);
+			graphics.drawImage(this.getTile(counter), x + offsetX + tilesetLocation.x, y + offsetY + (Tile.getHeight() * 2) + tilesetLocation.y, null);
 			
 			// highlights the selected tile.
 			if (counter == this.selectedTileIndex) {
 				graphics.setColor(Color.RED);
-				graphics.drawRect(x + tilesetX, y + (Tile.getHeight() * 2) + tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);}
+				graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);}
 			
 			counter++;
 		}
 		
 		// draws highlight
 		graphics.setColor(Color.RED);
-		graphics.drawRect(this.selectedTileX + this.tilesetX, this.selectedTileY + this.tilesetY, Tile.getWidth() - 1, Tile.getHeight() - 1);
+		graphics.drawRect(this.selectedTileX + this.tilesetLocation.x, this.selectedTileY + this.tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
 		
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
-		graphics.drawRect(tilesetX, tilesetY + Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
+		graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, this.tilesetWidth, this.tilesetHeight);
 		
 		this.renderSelectedTile(graphics);
 	}
