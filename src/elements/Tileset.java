@@ -77,7 +77,7 @@ public final class Tileset {
 		while (counter < tiles.length) {
 			// calculates the x and y of each tile using only the tile index.
 			int x = counter % tileGrid.width * Tile.getWidth();
-			int y = counter / tileGrid.height * Tile.getHeight();
+			int y = counter / tileGrid.width * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
 			graphics.drawImage(getTile(counter), x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
