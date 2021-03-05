@@ -8,7 +8,7 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import ui.MapPanel;
 import ui.NavBar;
-import ui.Ptileset;
+import ui.TilesetContainer;
 
 // the start of the application.
 public class MapMaker {
@@ -29,7 +29,7 @@ public class MapMaker {
 		frame.setJMenuBar(new NavBar().getInstance());
 		
 		frame.getContentPane().add(new MapPanel());
-		frame.getContentPane().add(new Ptileset());
+		frame.getContentPane().add(TilesetContainer.getInstance());
 		
 		frame.setTitle("Map Maker");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
