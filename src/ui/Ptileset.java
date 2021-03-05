@@ -55,7 +55,7 @@ public class Ptileset extends JPanel {
 		private Point offset;
 		
 		@Override
-		public void mouseClicked(MouseEvent e) {
+		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isMiddleMouseButton(e)) {
 				offset = e.getPoint();
 				Ptileset.this.tileset.setSelectedTileIndex(e.getX(), e.getY());
@@ -64,7 +64,7 @@ public class Ptileset extends JPanel {
 		}
 		
 		@Override
-		public void mousePressed(MouseEvent e) {
+		public void mouseDragged(MouseEvent e) {
 			if (SwingUtilities.isMiddleMouseButton(e)) {
 				int x = e.getPoint().x - offset.x;
 				int y = e.getPoint().y - offset.y;
@@ -78,14 +78,6 @@ public class Ptileset extends JPanel {
 			}
 			
 			System.out.println("press");
-		}
-		
-		@Override
-		public void mouseDragged(MouseEvent e) {
-			if (SwingUtilities.isMiddleMouseButton(e)) {
-//				tileset.updatePosition(e.getX(), e.getY(), mousePressedX, mousePressedY);
-				Ptileset.this.repaint();
-			}
 		}
 	}
 }
