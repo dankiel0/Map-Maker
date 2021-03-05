@@ -9,7 +9,7 @@ import tile.Tile;
 import ui.Ptileset;
 
 // the tile set that stores the sprites and whatnot.
-public final class Tileset implements Renderable {
+public final class Tileset {
 	private final int tilesetWidth, tilesetHeight;
 	
 	private final int tilesAlongXAxis, tilesAlongYAxis;
@@ -81,8 +81,7 @@ public final class Tileset implements Renderable {
 		graphics.drawImage(this.getTile(this.selectedTileIndex), x1, y1, null);
 	}
 	
-	@Override
-	public void render(Graphics graphics, int offsetX, int offsetY) {
+	public void render(Graphics graphics) {
 		int counter = 0;
 		while (counter < this.tiles.length) {
 			// calculates the x and y of each tile using only the tile index.
@@ -90,7 +89,7 @@ public final class Tileset implements Renderable {
 			int y = counter / this.tilesAlongXAxis * Tile.getHeight();
 			
 			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(this.getTile(counter), x + offsetX + tilesetLocation.x, y + offsetY + (Tile.getHeight() * 2) + tilesetLocation.y, null);
+			graphics.drawImage(this.getTile(counter), x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
 			
 			// highlights the selected tile.
 			if (counter == this.selectedTileIndex) {

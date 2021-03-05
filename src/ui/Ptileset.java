@@ -1,7 +1,6 @@
 package ui;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -40,7 +39,7 @@ public class Ptileset extends JPanel {
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		this.tileset.render(graphics, 0, 0);
+		this.tileset.render(graphics);
 	}
 	
 	public static int getW() {
@@ -57,8 +56,8 @@ public class Ptileset extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isMiddleMouseButton(e)) {
-				offset = e.getPoint();
-				Ptileset.this.tileset.setSelectedTileIndex(e.getX(), e.getY());
+				MouseHandler.this.offset = e.getPoint();
+//				Ptileset.this.tileset.setSelectedTileIndex(e.getX(), e.getY());
 				Ptileset.this.repaint();
 			}
 		}
@@ -74,10 +73,9 @@ public class Ptileset extends JPanel {
 				location.x += x;
 				location.y += y;
 				
-				Ptileset.this.tileset.setTilesetLocation(location);
+				Ptileset.this.repaint();
+				System.out.println("press");
 			}
-			
-			System.out.println("press");
 		}
 	}
 }
