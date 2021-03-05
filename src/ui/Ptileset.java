@@ -1,8 +1,10 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -13,61 +15,69 @@ import elements.Tileset;
 import resource_loaders.ImageLoader;
 
 public class Ptileset extends JPanel {
-	private static final long serialVersionUID;
+	private static final long serialVersionUID = 1L;
 	
-	private static final int w, h;
+	private static Dimension preferredSize = new Dimension(640, 640);
+	private MouseHandler mouseHandler = new MouseHandler();
 	
-	private Tileset tileset;
-	
-	private MouseListener ml;
-	
-	static {
-		serialVersionUID = 1L;
-		w = h = 640;
-	}
-	
-	{
-		this.ml = new MouseListener();
-		this.tileset = new Tileset(ImageLoader.loadFromDrive("C:\\Users\\khrap\\Desktop\\items.png"));
-	}
+	private Tileset tileset = new Tileset(ImageLoader.loadFromDrive("C:\\Users\\khrap\\Desktop\\items.png"));
 	
 	public Ptileset() {
-		super.setBackground(Color.WHITE);
-		
-		super.setPreferredSize(new Dimension(w, h));
-		
-		super.addMouseListener(ml);
-		super.addMouseMotionListener(ml);
+		super.addMouseListener(this.mouseHandler);
+		super.addMouseMotionListener(this.mouseHandler);
+	}
+	
+	@Override
+	public Dimension getPreferredSize() {
+		return Ptileset.preferredSize;
+	}
+	
+	@Override
+	public Color getBackground() {
+		return Color.WHITE;
 	}
 	
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-		tileset.render(graphics, 0, 0);
+		this.tileset.render(graphics, 0, 0);
 	}
 	
 	public static int getW() {
-		return Ptileset.w;
+		return Ptileset.preferredSize.width;
 	}
 	
 	public static int getH() {
-		return Ptileset.h;
+		return Ptileset.preferredSize.height;
 	}
 	
-	private class MouseListener extends MouseAdapter {
-		private int mousePressedX, mousePressedY;
+	private class MouseHandler extends MouseAdapter {
+		private Point offset;
 		
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			tileset.setSelectedTileIndex(e.getX(), e.getY());
-			repaint();
+			if (SwingUtilities.isMiddleMouseButton(e)) {
+				offset = e.getPoint();
+				Ptileset.this.tileset.setSelectedTileIndex(e.getX(), e.getY());
+				Ptileset.this.repaint();
+			}
 		}
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isMiddleMouseButton(e)) {
-				mousePressedX = e.getX();
-				mousePressedY = e.getY();
+                int x = e.getPoint().x - offset.x;
+                int y = e.getPoint().y - offset.y;
+                
+                Component component = e.getComponent();
+                Point location = component.getLocation();
+                
+                location.x += x;
+                location.y += y;
+                
+                component.setLocation(location);
+//				mousePressedX = e.getX();
+//				mousePressedY = e.getY();
 			}
 			
 			System.out.println("press");
@@ -75,10 +85,9 @@ public class Ptileset extends JPanel {
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
-			
 			if (SwingUtilities.isMiddleMouseButton(e)) {
-				tileset.updatePosition(e.getX(), e.getY(), mousePressedX, mousePressedY);
-				repaint();
+//				tileset.updatePosition(e.getX(), e.getY(), mousePressedX, mousePressedY);
+				Ptileset.this.repaint();
 			}
 		}
 	}
