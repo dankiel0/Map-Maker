@@ -15,7 +15,6 @@ public final class Tileset {
 	private BufferedImage[] tiles;
 	
 	private int selectedTileIndex;
-	private int selectedTileX, selectedTileY;
 	
 	private Point tilesetLocation = new Point();
 	
@@ -32,13 +31,13 @@ public final class Tileset {
 	}
 	
 	public void setSelectedTileIndex(int mouseX, int mouseY) {
-		if (mouseX > tilesetSize.width)
+		if (mouseX < tilesetLocation.x)
 			return;
-		if (mouseX < 0)
+		if (mouseX > tilesetLocation.x + tilesetSize.width - 1)
 			return;
-		if (mouseY > tilesetSize.height)
+		if (mouseY < tilesetLocation.y + Tile.getHeight() * 2)
 			return;
-		if (mouseY < Tile.getHeight() * 2)
+		if (mouseY > tilesetLocation.y + tilesetSize.height + Tile.getHeight() * 2 - 1)
 			return;
 		
 		int x = (mouseX - tilesetLocation.x) / Tile.getWidth();
@@ -85,14 +84,11 @@ public final class Tileset {
 			// highlights the selected tile.
 			if (counter == this.selectedTileIndex) {
 				graphics.setColor(Color.RED);
-				graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);}
+				graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
+			}
 			
 			counter++;
 		}
-		
-		// draws highlight
-		graphics.setColor(Color.RED);
-		graphics.drawRect(selectedTileX + tilesetLocation.x, selectedTileY + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
 		
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
