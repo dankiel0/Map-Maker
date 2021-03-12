@@ -34,7 +34,7 @@ public class TilesetContainer extends JPanel {
 	
 	@Override
 	public Color getBackground() {
-		return Color.WHITE;
+		return Color.BLACK;
 	}
 	
 	@Override

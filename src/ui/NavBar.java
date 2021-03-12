@@ -1,5 +1,6 @@
 package ui;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -11,104 +12,69 @@ public class NavBar implements ActionListener {
 	private JMenuBar navBar = new JMenuBar();
 	
 	public NavBar() {
-		JMenu menu;
-		JMenuItem menuItem;
+		navBar.setBackground(Color.BLACK);
 		
-		////////////////////////////////////////////////// creates file menu
-		menu = new JMenu("File");
-		navBar.add(menu);
+		navBar.add(makeMenu("File",
+				makeMenuItem("Create New Map"),
+				makeMenuItem("Open Existing Map"),
+				null,
+				makeMenuItem("Open Tileset"),
+				null,
+				makeMenuItem("Save"),
+				makeMenuItem("Save As..."),
+				null,
+				makeMenuItem("Exit")
+				));
 		
-		menuItem = new JMenuItem("Create New Map");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
+		navBar.add(makeMenu("Edit",
+				makeMenuItem("Undo"),
+				makeMenuItem("Redo"),
+				null,
+				makeMenuItem("Set Solids"),
+				makeMenuItem("Set Tiles"),
+				null,
+				makeMenuItem("Reset Map Position"),
+				makeMenuItem("Reset Tileset Position")
+				));
 		
-		menuItem = new JMenuItem("Open Existing Map");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
+		navBar.add(makeMenu("View",
+				makeMenuItem("Explore Map"),
+				null,
+				makeMenuItem("Display Full Map"),
+				makeMenuItem("Display Full Tileset")
+				));
 		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Open Tileset");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Save");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem("Save As...");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Exit");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		////////////////////////////////////////////////// creates edit menu
-		menu = new JMenu("Edit");
-		navBar.add(menu);
-		
-		menuItem = new JMenuItem("Undo");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem("Redo");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Set Solids");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem("Set Tiles");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Reset Map Position");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem("Reset Tileset Position");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		////////////////////////////////////////////////// creates test menu
-		menu = new JMenu("View");
-		navBar.add(menu);
-		
-		menuItem = new JMenuItem("Explore Map");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menu.addSeparator();
-		
-		menuItem = new JMenuItem("Display Full Map");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		menuItem = new JMenuItem("Display Full Tileset");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
-		
-		////////////////////////////////////////////////// creates help menu
-		menu = new JMenu("Help");
-		navBar.add(menu);
-		
-		menuItem = new JMenuItem("About Map Maker");
-		menuItem.addActionListener(this);
-		menu.add(menuItem);
+		navBar.add(makeMenu("Help",
+				makeMenuItem("About Map Maker")
+				));
 	}
 	
 	public JMenuBar getInstance() {
 		return this.navBar;
+	}
+	
+	private JMenu makeMenu(String name, JMenuItem... items) {
+		JMenu menu = new JMenu(name);
+		
+		menu.setBackground(Color.BLACK);
+		menu.setForeground(Color.WHITE);
+		
+		for(JMenuItem item : items)
+			if(item != null)
+				menu.add(item);
+			else menu.addSeparator();
+		
+		return menu;
+	}
+	
+	private JMenuItem makeMenuItem(String name) {
+		JMenuItem item = new JMenuItem(name);
+		
+		item.setBackground(Color.BLACK);
+		item.setForeground(Color.WHITE);
+		item.addActionListener(this);
+		
+		return item;
 	}
 	
 	@Override

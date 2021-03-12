@@ -1,5 +1,6 @@
 package src;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
@@ -23,15 +24,14 @@ public class MapMaker {
 	
 	private void initUI() {
 		JFrame frame = new JFrame();
-		
 		frame.setLayout(new FlowLayout());
 		
 		frame.setJMenuBar(new NavBar().getInstance());
-		
 		frame.getContentPane().add(new MapPanel());
 		frame.getContentPane().add(TilesetContainer.getInstance());
 		
 		frame.setTitle("Map Maker");
+		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();

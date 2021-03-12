@@ -11,7 +11,7 @@ public class MapPanel extends JPanel {
 	
 	public MapPanel() {
 		super.setPreferredSize(new Dimension(640, 640));
-		super.setBackground(Color.WHITE);
+		super.setBackground(Color.BLACK);
 	}
 	
 	@Override
