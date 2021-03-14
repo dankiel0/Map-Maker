@@ -10,6 +10,8 @@ import tile.Tile;
 import ui.TilesetContainer;
 
 public final class Tileset {
+	private static Tileset tilesetInstance = new Tileset();
+	
 	private Dimension tilesetSize, tileGrid;
 	
 	private BufferedImage[] tiles;
@@ -18,7 +20,9 @@ public final class Tileset {
 	
 	private Point tilesetLocation = new Point();
 	
-	public Tileset(BufferedImage tileset) {
+	private Tileset() {}
+	
+	public void setTileset(BufferedImage tileset) {
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
 		tileGrid = new Dimension(tileset.getWidth() / Tile.getWidth(), tileset.getHeight() / Tile.getHeight());
 		
@@ -47,11 +51,11 @@ public final class Tileset {
 	}
 	
 	public BufferedImage getTile(int index) {
-		return this.tiles[index];
+		return tiles[index];
 	}
 	
 	public Point getTilesetLocation() {
-		return this.tilesetLocation;
+		return tilesetLocation;
 	}
 	
 	private void renderSelectedTile(Graphics graphics) {
@@ -72,6 +76,8 @@ public final class Tileset {
 	}
 	
 	public void render(Graphics graphics) {
+		if (tiles == null) return;
+		
 		int counter = 0;
 		while (counter < tiles.length) {
 			// calculates the x and y of each tile using only the tile index.
@@ -82,7 +88,7 @@ public final class Tileset {
 			graphics.drawImage(getTile(counter), x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
 			
 			// highlights the selected tile.
-			if (counter == this.selectedTileIndex) {
+			if (counter == selectedTileIndex) {
 				graphics.setColor(Color.RED);
 				graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
 			}
@@ -95,5 +101,9 @@ public final class Tileset {
 		graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
 		
 		renderSelectedTile(graphics);
+	}
+	
+	public static Tileset getInstance() {
+		return tilesetInstance;
 	}
 }

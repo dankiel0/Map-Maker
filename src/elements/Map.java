@@ -2,13 +2,12 @@ package elements;
 
 import java.awt.Graphics;
 
-public class Map implements Renderable {
+public class Map {
 	public Map() {
 		
 	}
 	
-	@Override
-	public void render(Graphics graphics, int offsetX, int offsetY) {
+	public void render(Graphics graphics) {
 		
 	}
 }

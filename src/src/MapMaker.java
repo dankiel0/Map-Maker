@@ -1,42 +1,23 @@
 package src;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import ui.MapPanel;
+import ui.MapContainer;
 import ui.NavBar;
 import ui.TilesetContainer;
 
-// the start of the application.
 public class MapMaker {
 	public static void main(String[] args) {
 		new MapMaker().start();
 	}
 	
 	private void start() {
-		this.initLookAndFeel();
-		this.initUI();
-	}
-	
-	private void initUI() {
-		JFrame frame = new JFrame();
-		frame.setLayout(new FlowLayout());
-		
-		frame.setJMenuBar(new NavBar().getInstance());
-		frame.getContentPane().add(new MapPanel());
-		frame.getContentPane().add(TilesetContainer.getInstance());
-		
-		frame.setTitle("Map Maker");
-		frame.getContentPane().setBackground(Color.BLACK);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		frame.setVisible(true);
+		initLookAndFeel();
+		initUI();
 	}
 	
 	private void initLookAndFeel() {
@@ -45,5 +26,22 @@ public class MapMaker {
 		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void initUI() {
+		JFrame frame = new JFrame();
+		frame.setLayout(new FlowLayout());
+		
+		frame.setJMenuBar(NavBar.getInstance());
+		
+		frame.add(MapContainer.getInstance());
+		frame.add(TilesetContainer.getInstance());
+		
+		frame.setTitle("Map Maker");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.pack();
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
 	}
 }
