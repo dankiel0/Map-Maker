@@ -11,14 +11,19 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import elements.Tileset;
+import file.FileUtil;
+import resource_loaders.ImageLoader;
 
 public class TilesetContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static TilesetContainer containerInstance = new TilesetContainer();
 	
 	private Dimension containerSize = new Dimension(640, 640);
 	
-	private TilesetContainer() {
+	Tileset tileset;
+	
+	public TilesetContainer() {
+		tileset = new Tileset();
+		
 		MouseHandler mouseHandler = new MouseHandler();
 		
 		super.addMouseListener(mouseHandler);
@@ -40,12 +45,13 @@ public class TilesetContainer extends JPanel {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		
-		Tileset.getInstance().render(graphics);
+		tileset.render(graphics);
 	}
 	
-	// singleton pattern tingz
-	public static TilesetContainer getInstance() {
-		return containerInstance;
+	public void openNewTileset() {
+		FileUtil.openFile();
+		tileset.setTileset(ImageLoader.loadFromDrive(FileUtil.getFilePath()));
+		repaint();
 	}
 	
 	// basically handles mouse events, mainly just the dragging and dropping feature
@@ -56,13 +62,13 @@ public class TilesetContainer extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			// when the mouse is pressed, then a tile must've been selected
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				Tileset.getInstance().setSelectedTileIndex(e.getX(), e.getY());
+				tileset.setSelectedTileIndex(e.getX(), e.getY());
 				repaint();
 			}
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = Tileset.getInstance().getTilesetLocation();
+				Point location = tileset.getTilesetLocation();
 				
 				offset.x = e.getX() - location.x;
 				offset.y = e.getY() - location.y;
@@ -75,13 +81,13 @@ public class TilesetContainer extends JPanel {
 		public void mouseDragged(MouseEvent e) {
 			// a dragging-selection feature
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				Tileset.getInstance().setSelectedTileIndex(e.getX(), e.getY());
+				tileset.setSelectedTileIndex(e.getX(), e.getY());
 				repaint();
 			}
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = Tileset.getInstance().getTilesetLocation();
+				Point location = tileset.getTilesetLocation();
 				
 				location.x = e.getX() - offset.x;
 				location.y = e.getY() - offset.y;

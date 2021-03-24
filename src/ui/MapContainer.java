@@ -6,11 +6,16 @@ import java.awt.Graphics;
 
 import javax.swing.JPanel;
 
+import elements.Map;
+
 public class MapContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private static MapContainer mapContainerInstance = new MapContainer();
 	
-	private MapContainer() {
+	private Map map;
+	
+	public MapContainer() {
+		map = new Map();
+		
 		super.setPreferredSize(new Dimension(640, 640));
 		super.setBackground(Color.WHITE);
 	}
@@ -18,9 +23,5 @@ public class MapContainer extends JPanel {
 	@Override
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
-	}
-	
-	public static MapContainer getInstance() {
-		return mapContainerInstance;
 	}
 }

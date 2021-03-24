@@ -7,11 +7,9 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import tile.Tile;
-import ui.TilesetContainer;
+import ui.Editor;
 
-public final class Tileset {
-	private static Tileset tilesetInstance = new Tileset();
-	
+public class Tileset {
 	private Dimension tilesetSize, tileGrid;
 	
 	private BufferedImage[] tiles;
@@ -19,8 +17,6 @@ public final class Tileset {
 	private int selectedTileIndex;
 	
 	private Point tilesetLocation = new Point();
-	
-	private Tileset() {}
 	
 	public void setTileset(BufferedImage tileset) {
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
@@ -61,14 +57,14 @@ public final class Tileset {
 	private void renderSelectedTile(Graphics graphics) {
 		int x1 = 0, y1 = 0;
 		
-		int w = TilesetContainer.getInstance().getWidth();
+		int w = Editor.getActiveEditor().getTilesetContainer().getWidth();
 		int h = Tile.getHeight() * 2;
 		
 		// draws background.
 		graphics.setColor(Color.BLACK);
 		graphics.fillRect(x1, y1, w, h);
 		
-		x1 = (TilesetContainer.getInstance().getWidth() - Tile.getWidth()) / 2;
+		x1 = (w - Tile.getWidth()) / 2;
 		y1 = Tile.getHeight() / 2;
 		
 		// draws the selected tile in the corner.
@@ -101,9 +97,5 @@ public final class Tileset {
 		graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
 		
 		renderSelectedTile(graphics);
-	}
-	
-	public static Tileset getInstance() {
-		return tilesetInstance;
 	}
 }

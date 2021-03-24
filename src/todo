@@ -13,3 +13,51 @@ completed
 create tile set panel
 >> moving tile set
 >> opening tile set using menu
+
+/////////////////////////////////////////////////////////////////
+
+create new map
+
+>>
+opens a new editor
+>>
+
+open existing map
+
+>>
+opens editable map file
+>>
+
+open tileset
+
+>>
+opens a tileset
+>>
+
+save
+
+>>
+
+>>
+
+save as
+exit
+
+/////////////////////////////////////////////////////////////////
+
+undo
+redo
+set solids
+set tiles
+reset map position
+reset tileset position
+
+/////////////////////////////////////////////////////////////////
+
+explore map
+display full map
+display full tileset
+
+/////////////////////////////////////////////////////////////////
+
+about map maker

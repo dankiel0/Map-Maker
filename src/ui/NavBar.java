@@ -7,16 +7,13 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
-import elements.Tileset;
 import file.FileUtil;
-import resource_loaders.ImageLoader;
+import help.Help;
 
 public class NavBar implements ActionListener {
-	private static NavBar navBarInstance = new NavBar();
-	
 	private JMenuBar navBar = new JMenuBar();
 	
-	private NavBar() {
+	public NavBar() {
 		navBar.add(makeMenu("File",
 				makeMenuItem("Create New Map"),
 				makeMenuItem("Open Existing Map"),
@@ -67,23 +64,21 @@ public class NavBar implements ActionListener {
 		return item;
 	}
 	
-	public static JMenuBar getInstance() {
-		return NavBar.navBarInstance.navBar;
+	public JMenuBar getBar() {
+		return navBar;
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Create New Map":
-			
+			new Editor();
 			break;
 		case "Open Existing Map":
 			FileUtil.openFile();
 			break;
 		case "Open Tileset":
-			FileUtil.openFile();
-			Tileset.getInstance().setTileset(ImageLoader.loadFromDrive(FileUtil.getFilePath()));
-			TilesetContainer.getInstance().repaint();
+			Editor.getActiveEditor().getTilesetContainer().openNewTileset();
 			break;
 		case "Save":
 			FileUtil.saveFile();
@@ -92,7 +87,7 @@ public class NavBar implements ActionListener {
 			FileUtil.saveFile();
 			break;
 		case "Exit":
-			System.exit(0);
+			Editor.getActiveEditor().dispose();
 			break;
 		case "Undo":
 			
@@ -122,7 +117,7 @@ public class NavBar implements ActionListener {
 			
 			break;
 		case "About Map Maker":
-			
+			Help.displayMessage();
 			break;
 		default:
 			break;
