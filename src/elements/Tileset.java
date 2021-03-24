@@ -57,7 +57,7 @@ public class Tileset {
 	private void renderSelectedTile(Graphics graphics) {
 		int x1 = 0, y1 = 0;
 		
-		int w = Editor.getActiveEditor().getTilesetContainer().getWidth();
+		int w = Editor.getCurrentEditor().getTilesetContainer().getWidth();
 		int h = Tile.getHeight() * 2;
 		
 		// draws background.

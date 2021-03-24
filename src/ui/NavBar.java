@@ -75,19 +75,19 @@ public class NavBar implements ActionListener {
 			new Editor();
 			break;
 		case "Open Existing Map":
-			FileUtil.openFile();
+			FileUtil.openMap();
 			break;
 		case "Open Tileset":
-			Editor.getActiveEditor().getTilesetContainer().openNewTileset();
+			FileUtil.openTileset();
 			break;
 		case "Save":
-			FileUtil.saveFile();
+			FileUtil.save();
 			break;
 		case "Save As...":
-			FileUtil.saveFile();
+			FileUtil.saveAs();
 			break;
 		case "Exit":
-			Editor.getActiveEditor().dispose();
+			Editor.getCurrentEditor().dispose();
 			break;
 		case "Undo":
 			

@@ -6,28 +6,33 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+// class Editor represents a workspace for developing tile based maps.
+// WindowAdapter is needed for checking window events.
 public class Editor extends WindowAdapter {
-	private static Editor activeEditor;
+	private static Editor currentEditor;
 	
 	private JFrame frame;
-	private String title;
+	private String title = "Map Maker - ";
 	
-	private NavBar navBar;
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
 	
+	// creates editor without open map file.
 	public Editor() {
 		initUI();
+		
+		// "Untitled" is the default name for a new editor without an open map file.
 		addFileNameToTitle("Untitled");
 	}
 	
+	// creates editor with open map file.
 	public Editor(String fileName) {
 		this();
 		addFileNameToTitle(fileName);
 	}
 	
-	public static Editor getActiveEditor() {
-		return activeEditor;
+	public static Editor getCurrentEditor() {
+		return currentEditor;
 	}
 	
 	public MapContainer getMapContainer() {
@@ -38,52 +43,57 @@ public class Editor extends WindowAdapter {
 		return tilesetContainer;
 	}
 	
+	// exits the editor.
 	public void dispose() {
 		frame.dispose();
 	}
 	
 	private void initUI() {
-		navBar = new NavBar();
 		mapContainer = new MapContainer();
 		tilesetContainer = new TilesetContainer();
 		
 		frame = new JFrame();
 		frame.setLayout(new FlowLayout());
 		
-		frame.setJMenuBar(navBar.getBar());
+		frame.setJMenuBar(new NavBar().getBar());
 		
 		frame.add(mapContainer);
 		frame.add(tilesetContainer);
 		
+		// class Editors inherits from WindowAdapter.
 		frame.addWindowFocusListener(this);
 		frame.addWindowListener(this);
-		
-		title = "Map Maker - ";
 		
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
-		frame.setLocationRelativeTo(null);
+		frame.setLocationByPlatform(true);
 		frame.setVisible(true);
 	}
 	
+	// adds the open file to the frame title.
 	public void addFileNameToTitle(String fileName) {
 		frame.setTitle(title + fileName);
 	}
 	
+	// sets the current editor to the one that's active.
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
-		activeEditor = Editor.this;
+		currentEditor = this;
 	}
 	
+	// show "are you sure???" screen, if work is not saved.
 	@Override
 	public void windowClosing(WindowEvent e) {
-		// show "are you sure???" screen, if work is not saved
+		
 	}
 	
+	// edge case: when the last editor is closed, the program must end.
+	// otherwise the program will not terminate.
 	@Override
 	public void windowClosed(WindowEvent e) {
-		if (!activeEditor.frame.isActive())
+		// if there is no current active editor, end the program.
+		if (!Editor.currentEditor.frame.isActive())
 			System.exit(0);
 	}
 }

@@ -48,11 +48,11 @@ public class TilesetContainer extends JPanel {
 		tileset.render(graphics);
 	}
 	
-	public void openNewTileset() {
-		FileUtil.openFile();
-		tileset.setTileset(ImageLoader.loadFromDrive(FileUtil.getFilePath()));
-		repaint();
-	}
+//	public void openNewTileset() {
+//		FileUtil.openFile();
+//		tileset.setTileset(ImageLoader.loadFromDrive(FileUtil.getFilePath()));
+//		repaint();
+//	}
 	
 	// basically handles mouse events, mainly just the dragging and dropping feature
 	private class MouseHandler extends MouseAdapter {
