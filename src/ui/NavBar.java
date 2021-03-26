@@ -29,11 +29,14 @@ public class NavBar implements ActionListener {
 				makeMenuItem("Undo"),
 				makeMenuItem("Redo"),
 				null,
-				makeMenuItem("Set Solids"),
+				makeMenuItem("Set Collisions"),
 				makeMenuItem("Set Tiles"),
 				null,
 				makeMenuItem("Reset Map Position"),
-				makeMenuItem("Reset Tileset Position")));
+				makeMenuItem("Reset Tileset Position"),
+				null,
+				makeMenuItem("Edit Background"),
+				makeMenuItem("Edit Foreground")));
 		
 		navBar.add(makeMenu("View",
 				makeMenuItem("Explore Map"),

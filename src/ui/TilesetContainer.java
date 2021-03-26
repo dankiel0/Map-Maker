@@ -6,20 +6,19 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import elements.Tileset;
-import file.FileUtil;
-import resource_loaders.ImageLoader;
 
 public class TilesetContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Dimension containerSize = new Dimension(640, 640);
 	
-	Tileset tileset;
+	private Tileset tileset;
 	
 	public TilesetContainer() {
 		tileset = new Tileset();
@@ -48,11 +47,10 @@ public class TilesetContainer extends JPanel {
 		tileset.render(graphics);
 	}
 	
-//	public void openNewTileset() {
-//		FileUtil.openFile();
-//		tileset.setTileset(ImageLoader.loadFromDrive(FileUtil.getFilePath()));
-//		repaint();
-//	}
+	public void setTileset(BufferedImage image) {
+		tileset.setTileset(image);
+		repaint();
+	}
 	
 	// basically handles mouse events, mainly just the dragging and dropping feature
 	private class MouseHandler extends MouseAdapter {

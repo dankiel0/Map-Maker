@@ -20,3 +20,8 @@ public class MapMaker {
 		}
 	}
 }
+
+// set collisions
+// set tiles
+// >> edit background
+// >> edit foreground
