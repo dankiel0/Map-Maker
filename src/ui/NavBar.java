@@ -41,8 +41,7 @@ public class NavBar implements ActionListener {
 		navBar.add(makeMenu("View",
 				makeMenuItem("Explore Map"),
 				null,
-				makeMenuItem("Display Full Map"),
-				makeMenuItem("Display Full Tileset")));
+				makeMenuItem("Display Full Map")));
 		
 		navBar.add(makeMenu("Help",
 				makeMenuItem("About Map Maker")));
@@ -78,49 +77,52 @@ public class NavBar implements ActionListener {
 			new Editor();
 			break;
 		case "Open Existing Map":
-			FileUtil.openMap();
+			FileUtil.getInstance().openMap();
 			break;
 		case "Open Tileset":
-			FileUtil.openTileset();
+			FileUtil.getInstance().openTileset();
 			break;
 		case "Save":
-			FileUtil.save();
+			FileUtil.getInstance().save();
 			break;
 		case "Save As...":
-			FileUtil.saveAs();
+			FileUtil.getInstance().saveAs();
 			break;
 		case "Exit":
 			Editor.getCurrentEditor().dispose();
 			break;
 		case "Undo":
-			
+			System.out.println("Undo");
 			break;
 		case "Redo":
-			
+			System.out.println("Redo");
 			break;
-		case "Set Solids":
-			
+		case "Set Collisions":
+			System.out.println("Set Collisions");
 			break;
 		case "Set Tiles":
-			
+			System.out.println("Set Tiles");
 			break;
 		case "Reset Map Position":
-			
+			System.out.println("Reset Map Position");
 			break;
 		case "Reset Tileset Position":
-			
+			System.out.println("Reset Tileset Position");
+			break;
+		case "Edit Background":
+			System.out.println("Edit Background");
+			break;
+		case "Edit Foreground":
+			System.out.println("Edit Foreground");
 			break;
 		case "Explore Map":
-			
+			System.out.println("Explore Map");
 			break;
 		case "Display Full Map":
-			
-			break;
-		case "Display Full Tileset":
-			
+			System.out.println("Display Full Map");
 			break;
 		case "About Map Maker":
-			Help.displayMessage();
+			Help.getInstance().display();
 			break;
 		default:
 			break;

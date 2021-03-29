@@ -3,6 +3,8 @@ package src;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
+import file.FileUtil;
+import help.Help;
 import ui.Editor;
 
 public class MapMaker {
@@ -10,6 +12,13 @@ public class MapMaker {
 		initLookAndFeel();
 		
 		new Editor();
+		
+		initAll();
+	}
+	
+	private static void initAll() {
+		FileUtil.getInstance();
+		Help.getInstance();
 	}
 	
 	private static void initLookAndFeel() {

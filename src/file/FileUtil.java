@@ -6,31 +6,42 @@ import resource_loaders.ImageLoader;
 import ui.Editor;
 
 public class FileUtil {
-	private static JFileChooser fileChooser = new JFileChooser();
+	private static FileUtil fileUtil;
 	
-	public static void openMap() {
+	private JFileChooser fileChooser = new JFileChooser();
+	
+	private FileUtil() {}
+	
+	public static FileUtil getInstance() {
+		if (fileUtil == null)
+			fileUtil = new FileUtil();
+		
+		return fileUtil;
+	}
+	
+	public void openMap() {
 		fileChooser.setDialogTitle("Open Existing Map");
 		fileChooser.showOpenDialog(null);
 	}
 	
-	public static void openTileset() {
+	public void openTileset() {
 		fileChooser.setDialogTitle("Open Tileset");
 		fileChooser.showOpenDialog(null);
 		
 		Editor.getCurrentEditor().getTilesetContainer().setTileset(ImageLoader.loadFromDrive(getFilePath()));
 	}
 	
-	public static void saveAs() {
+	public void saveAs() {
 		fileChooser.setDialogTitle("Save As...");
 		fileChooser.showSaveDialog(null);
 	}
 	
-	public static void save() {
+	public void save() {
 		fileChooser.setDialogTitle("Save");
 		fileChooser.showSaveDialog(null);
 	}
 	
-	private static String getFilePath() {
+	private String getFilePath() {
 		return fileChooser.getSelectedFile().getAbsolutePath();
 	}
 }

@@ -6,8 +6,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 public class Help {
-	public static void displayMessage() {
-		JFrame frame = new JFrame();
+	private static Help help;
+	
+	private JFrame frame;
+	
+	private Help() {
+		frame = new JFrame();
 		
 		frame.setPreferredSize(new Dimension(200, 125));
 		
@@ -17,6 +21,16 @@ public class Help {
 		frame.setResizable(false);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
+	}
+	
+	public static Help getInstance() {
+		if (help == null)
+			help = new Help();
+		
+		return help;
+	}
+	
+	public void display() {
 		frame.setVisible(true);
 	}
 }
