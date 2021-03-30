@@ -58,6 +58,9 @@ public class TilesetContainer extends JPanel {
 		
 		@Override
 		public void mousePressed(MouseEvent e) {
+			if(!tileset.exists())
+				return;
+			
 			// when the mouse is pressed, then a tile must've been selected
 			if (SwingUtilities.isLeftMouseButton(e)) {
 				tileset.setSelectedTileIndex(e.getX(), e.getY());
@@ -77,6 +80,9 @@ public class TilesetContainer extends JPanel {
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
+			if(!tileset.exists())
+				return;
+			
 			// a dragging-selection feature
 			if (SwingUtilities.isLeftMouseButton(e)) {
 				tileset.setSelectedTileIndex(e.getX(), e.getY());

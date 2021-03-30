@@ -19,6 +19,9 @@ public class Tileset {
 	private Point tilesetLocation = new Point();
 	
 	public void setTileset(BufferedImage tileset) {
+		if (tiles != null)
+			return;
+		
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
 		tileGrid = new Dimension(tileset.getWidth() / Tile.getWidth(), tileset.getHeight() / Tile.getHeight());
 		
@@ -71,8 +74,13 @@ public class Tileset {
 		graphics.drawImage(getTile(selectedTileIndex), x1, y1, null);
 	}
 	
+	public boolean exists() {
+		return tiles != null;
+	}
+	
 	public void render(Graphics graphics) {
-		if (tiles == null) return;
+		if (!exists())
+			return;
 		
 		int counter = 0;
 		while (counter < tiles.length) {

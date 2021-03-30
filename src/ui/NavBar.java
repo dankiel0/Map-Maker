@@ -26,21 +26,13 @@ public class NavBar implements ActionListener {
 				makeMenuItem("Exit")));
 		
 		navBar.add(makeMenu("Edit",
-				makeMenuItem("Undo"),
-				makeMenuItem("Redo"),
-				null,
-				makeMenuItem("Set Collisions"),
-				makeMenuItem("Set Tiles"),
-				null,
-				makeMenuItem("Reset Map Position"),
-				makeMenuItem("Reset Tileset Position"),
+				makeMenuItem("Edit Collisions"),
 				null,
 				makeMenuItem("Edit Background"),
 				makeMenuItem("Edit Foreground")));
 		
 		navBar.add(makeMenu("View",
 				makeMenuItem("Explore Map"),
-				null,
 				makeMenuItem("Display Full Map")));
 		
 		navBar.add(makeMenu("Help",
@@ -91,23 +83,11 @@ public class NavBar implements ActionListener {
 		case "Exit":
 			Editor.getCurrentEditor().dispose();
 			break;
-		case "Undo":
-			System.out.println("Undo");
-			break;
-		case "Redo":
-			System.out.println("Redo");
-			break;
-		case "Set Collisions":
-			System.out.println("Set Collisions");
+		case "Edit Collisions":
+			System.out.println("Edit Collisions");
 			break;
 		case "Set Tiles":
 			System.out.println("Set Tiles");
-			break;
-		case "Reset Map Position":
-			System.out.println("Reset Map Position");
-			break;
-		case "Reset Tileset Position":
-			System.out.println("Reset Tileset Position");
 			break;
 		case "Edit Background":
 			System.out.println("Edit Background");
