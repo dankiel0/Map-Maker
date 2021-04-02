@@ -11,7 +11,7 @@ public class MapMaker {
 	public static void main(String[] args) {
 		initLookAndFeel();
 		
-		new Thread(new Editor()).start();
+		new Editor();
 		
 		initAll();
 	}

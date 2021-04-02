@@ -10,7 +10,7 @@ import file.MapFile;
 
 // class Editor represents a workspace for developing tile based maps.
 // WindowAdapter is needed for checking window events.
-public class Editor extends WindowAdapter implements Runnable {
+public class Editor extends WindowAdapter {
 	private static Editor currentEditor;
 	
 	private JFrame frame;
@@ -103,12 +103,5 @@ public class Editor extends WindowAdapter implements Runnable {
 		// if there is no current active editor, end the program.
 		if (!Editor.currentEditor.frame.isActive())
 			System.exit(0);
-	}
-	
-	@Override
-	public void run() {
-		while(true) {
-			
-		}
 	}
 }

@@ -66,7 +66,7 @@ public class NavBar implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 		case "Create New Map":
-			new Thread(new Editor()).start();
+			new Editor();
 			break;
 		case "Open Existing Map":
 			FileUtil.getInstance().openMap();
