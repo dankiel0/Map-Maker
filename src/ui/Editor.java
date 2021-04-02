@@ -5,6 +5,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import file.MapFile;
 
@@ -72,7 +73,7 @@ public class Editor extends WindowAdapter {
 		frame.addWindowFocusListener(this);
 		frame.addWindowListener(this);
 		
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		frame.setResizable(false);
 		frame.pack();
 		frame.setLocationByPlatform(true);
@@ -90,10 +91,29 @@ public class Editor extends WindowAdapter {
 		currentEditor = this;
 	}
 	
+	public static Object[] options = {"Save", "Don't Save", "Cancel"};
 	// show "are you sure???" screen, if work is not saved.
 	@Override
 	public void windowClosing(WindowEvent e) {
+		if (mapFile.hasUnsavedChanges()) {
+			int result =
+					JOptionPane.showOptionDialog(null,
+					"Do you want to save changes to Untitled",
+					"Map Maker",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					null,
+					options,
+					null);
+			
+			if (result == JOptionPane.YES_OPTION)
+				mapFile.save();
+			
+			else if(result == JOptionPane.NO_OPTION)
+				frame.dispose();
+		}
 		
+		else frame.dispose();
 	}
 	
 	// edge case: when the last editor is closed, the program must end.

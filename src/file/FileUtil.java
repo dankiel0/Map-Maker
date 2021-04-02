@@ -39,7 +39,7 @@ public class FileUtil {
 	}
 	
 	public void saveAs() {
-		if (Editor.getCurrentEditor().getMapFile().isSaved())
+		if (!Editor.getCurrentEditor().getMapFile().hasUnsavedChanges())
 			return;
 		
 		fileChooser.setDialogTitle("Save As...");
@@ -57,7 +57,7 @@ public class FileUtil {
 			return;
 		}
 		
-		if (Editor.getCurrentEditor().getMapFile().isSaved())
+		if (!Editor.getCurrentEditor().getMapFile().hasUnsavedChanges())
 			return;
 		
 		fileChooser.setDialogTitle("Save");
