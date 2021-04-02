@@ -36,29 +36,27 @@ public class FileUtil {
 			return;
 		
 		Editor.getCurrentEditor().getTilesetContainer().setTileset(ImageLoader.loadFromDrive(getFilePath()));
+//		Editor.getCurrentEditor().getFile().write(getFilePath());
 	}
 	
 	public void saveAs() {
-		if (!Editor.getCurrentEditor().getMapFile().hasUnsavedChanges())
-			return;
-		
 		fileChooser.setDialogTitle("Save As...");
 		fileChooser.showSaveDialog(null);
 		
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-		Editor.getCurrentEditor().getMapFile().setFile(getFilePath());
+//		Editor.getCurrentEditor().getFile().setFile(getFilePath());
 	}
 	
 	public void save() {
-		if (!Editor.getCurrentEditor().getMapFile().exists()) {
-			saveAs();
-			return;
-		}
-		
-		if (!Editor.getCurrentEditor().getMapFile().hasUnsavedChanges())
-			return;
+//		if (!Editor.getCurrentEditor().getFile().exists()) {
+//			saveAs();
+//			return;
+//		}
+//		
+//		if (!Editor.getCurrentEditor().getFile().hasUnsavedChanges())
+//			return;
 		
 		fileChooser.setDialogTitle("Save");
 		fileChooser.showSaveDialog(null);

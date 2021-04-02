@@ -1,5 +1,7 @@
 package tile;
 
+import java.awt.Graphics;
+
 // a tile.
 public class Tile {
 	private static int width = 32;
@@ -51,5 +53,9 @@ public class Tile {
 	
 	public static int getHeight() {
 		return Tile.height;
+	}
+	
+	public void render(Graphics graphics) {
+		
 	}
 }

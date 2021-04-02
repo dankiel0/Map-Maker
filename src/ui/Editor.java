@@ -5,9 +5,8 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
-import file.MapFile;
+//import file.EditableFile;
 
 // class Editor represents a workspace for developing tile based maps.
 // WindowAdapter is needed for checking window events.
@@ -20,7 +19,7 @@ public class Editor extends WindowAdapter {
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
 	
-	private MapFile mapFile = new MapFile();
+	//	private EditableFile file = new EditableFile();
 	
 	// creates editor without open map file.
 	public Editor() {
@@ -48,9 +47,9 @@ public class Editor extends WindowAdapter {
 		return tilesetContainer;
 	}
 	
-	public MapFile getMapFile() {
-		return mapFile;
-	}
+//	public EditableFile getFile() {
+//		return file;
+//	}
 	
 	// exits the editor.
 	public void dispose() {
@@ -95,31 +94,34 @@ public class Editor extends WindowAdapter {
 	// show "are you sure???" screen, if work is not saved.
 	@Override
 	public void windowClosing(WindowEvent e) {
-		if (mapFile.hasUnsavedChanges()) {
-			int result =
-					JOptionPane.showOptionDialog(null,
-					"Do you want to save changes to Untitled",
-					"Map Maker",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE,
-					null,
-					options,
-					null);
-			
-			if (result == JOptionPane.YES_OPTION)
-				mapFile.save();
-			
-			else if(result == JOptionPane.NO_OPTION)
-				frame.dispose();
-		}
-		
-		else frame.dispose();
+//		if (file.hasUnsavedChanges()) {
+//			int result =
+//					JOptionPane.showOptionDialog(null,
+//					"Do you want to save changes to " + file.getFilePath(),
+//					"Map Maker",
+//					JOptionPane.YES_NO_CANCEL_OPTION,
+//					JOptionPane.WARNING_MESSAGE,
+//					null,
+//					options,
+//					null);
+//			
+//			if (result == JOptionPane.YES_OPTION)
+//				file.save();
+//			
+//			else if(result == JOptionPane.NO_OPTION)
+//				frame.dispose();
+//		}
+//		
+//		else frame.dispose();
+		frame.dispose();
 	}
 	
 	// edge case: when the last editor is closed, the program must end.
 	// otherwise the program will not terminate.
 	@Override
 	public void windowClosed(WindowEvent e) {
+//		file.close();
+		
 		// if there is no current active editor, end the program.
 		if (!Editor.currentEditor.frame.isActive())
 			System.exit(0);
