@@ -8,8 +8,6 @@ import ui.Editor;
 public class FileUtil {
 	private static FileUtil fileUtil;
 	
-	private MapFile mapFile;
-	
 	private JFileChooser fileChooser = new JFileChooser();
 	
 	private FileUtil() {}
@@ -41,7 +39,7 @@ public class FileUtil {
 	}
 	
 	public void saveAs() {
-		if (mapFile.isSaved())
+		if (Editor.getCurrentEditor().getMapFile().isSaved())
 			return;
 		
 		fileChooser.setDialogTitle("Save As...");
@@ -50,21 +48,20 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-		mapFile = new MapFile(getFilePath());
+		Editor.getCurrentEditor().getMapFile().setFile(getFilePath());
 	}
 	
 	public void save() {
-		if (mapFile == null) {
+		if (!Editor.getCurrentEditor().getMapFile().exists()) {
 			saveAs();
 			return;
 		}
 		
-		if (mapFile.isSaved())
+		if (Editor.getCurrentEditor().getMapFile().isSaved())
 			return;
 		
 		fileChooser.setDialogTitle("Save");
 		fileChooser.showSaveDialog(null);
-		
 	}
 	
 	private String getFilePath() {

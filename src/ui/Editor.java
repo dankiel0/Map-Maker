@@ -6,9 +6,11 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import file.MapFile;
+
 // class Editor represents a workspace for developing tile based maps.
 // WindowAdapter is needed for checking window events.
-public class Editor extends WindowAdapter {
+public class Editor extends WindowAdapter implements Runnable {
 	private static Editor currentEditor;
 	
 	private JFrame frame;
@@ -16,6 +18,8 @@ public class Editor extends WindowAdapter {
 	
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
+	
+	private MapFile mapFile = new MapFile();
 	
 	// creates editor without open map file.
 	public Editor() {
@@ -41,6 +45,10 @@ public class Editor extends WindowAdapter {
 	
 	public TilesetContainer getTilesetContainer() {
 		return tilesetContainer;
+	}
+	
+	public MapFile getMapFile() {
+		return mapFile;
 	}
 	
 	// exits the editor.
@@ -95,5 +103,12 @@ public class Editor extends WindowAdapter {
 		// if there is no current active editor, end the program.
 		if (!Editor.currentEditor.frame.isActive())
 			System.exit(0);
+	}
+	
+	@Override
+	public void run() {
+		while(true) {
+			
+		}
 	}
 }

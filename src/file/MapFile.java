@@ -5,12 +5,15 @@ public class MapFile {
 	
 	private boolean isSaved;
 	
-	public MapFile(String path) {
+	public void setFile(String path) {
 		filePath = path;
-		
 	}
 	
 	public boolean isSaved() {
 		return isSaved;
+	}
+	
+	public boolean exists() {
+		return filePath != null;
 	}
 }
