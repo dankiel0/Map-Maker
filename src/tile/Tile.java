@@ -1,6 +1,7 @@
 package tile;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 // a tile.
 public class Tile {
@@ -14,11 +15,15 @@ public class Tile {
 	
 	private boolean isSolid;
 	
-	public Tile(int x, int y, int tileIndex) {
+	private BufferedImage tile;
+	
+	public Tile(int x, int y, int tileIndex, BufferedImage img) {
 		this.x = x;
 		this.y = y;
 		
 		this.tileIndex = tileIndex;
+		
+		tile = img;
 	}
 	
 	public int getX() {
@@ -56,6 +61,6 @@ public class Tile {
 	}
 	
 	public void render(Graphics graphics) {
-		
+		graphics.drawImage(tile, x, y, null);
 	}
 }

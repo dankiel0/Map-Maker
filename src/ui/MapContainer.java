@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import elements.Map;
+import tile.Tile;
 
 public class MapContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -48,7 +49,8 @@ public class MapContainer extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				
+				map.addTile(new Tile(e.getX(), e.getY(), Editor.getCurrentEditor().getTilesetContainer().getTileset().getSelectedTileIndex(), Editor.getCurrentEditor().getTilesetContainer().getTileset().getTile(Editor.getCurrentEditor().getTilesetContainer().getTileset().getSelectedTileIndex())));
+				repaint();
 			}
 			
 			else if (SwingUtilities.isMiddleMouseButton(e)) {

@@ -53,25 +53,27 @@ public class Tileset {
 		return tiles[index];
 	}
 	
+	public int getSelectedTileIndex() {
+		return selectedTileIndex;
+	}
+	
 	public Point getTilesetLocation() {
 		return tilesetLocation;
 	}
 	
 	private void renderSelectedTile(Graphics graphics) {
-		int x1 = 0, y1 = 0;
-		
-		int w = Editor.getCurrentEditor().getTilesetContainer().getWidth();
-		int h = Tile.getHeight() * 2;
-		
 		// draws background.
 		graphics.setColor(Color.BLACK);
-		graphics.fillRect(x1, y1, w, h);
-		
-		x1 = (w - Tile.getWidth()) / 2;
-		y1 = Tile.getHeight() / 2;
+		graphics.fillRect(0, 0, 640, 64);
 		
 		// draws the selected tile in the corner.
-		graphics.drawImage(getTile(selectedTileIndex), x1, y1, null);
+		if (!exists()) {
+			graphics.setColor(Color.WHITE);
+			graphics.fillRect(304, 16, 32, 32);
+			graphics.setColor(Color.BLACK);
+		}
+		
+		else graphics.drawImage(getTile(selectedTileIndex), 304, 16, null);
 	}
 	
 	public boolean exists() {
@@ -79,6 +81,11 @@ public class Tileset {
 	}
 	
 	public void render(Graphics graphics) {
+		renderSelectedTile(graphics);
+		
+		graphics.drawString("Tileset", 0, 74);
+		graphics.drawString("<" + tilesetLocation.x + ", " + tilesetLocation.y + ">", 0, 89);
+		
 		if (!exists())
 			return;
 		
@@ -103,7 +110,5 @@ public class Tileset {
 		// draws border around tileset.
 		graphics.setColor(Color.BLACK);
 		graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
-		
-		renderSelectedTile(graphics);
 	}
 }

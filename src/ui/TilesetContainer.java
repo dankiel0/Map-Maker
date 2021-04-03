@@ -52,6 +52,10 @@ public class TilesetContainer extends JPanel {
 		repaint();
 	}
 	
+	public Tileset getTileset() {
+		return tileset;
+	}
+	
 	// basically handles mouse events, mainly just the dragging and dropping feature
 	private class MouseHandler extends MouseAdapter {
 		private Point offset = new Point();
