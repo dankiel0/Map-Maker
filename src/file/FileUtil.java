@@ -35,7 +35,8 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-		Editor.getCurrentEditor().getTilesetContainer().setTileset(ImageLoader.loadFromDrive(getFilePath()));
+		Editor.getCurrentEditor().getTilesetContainer().getTileset().setTileset(ImageLoader.loadFromDrive(getFilePath()));
+		Editor.getCurrentEditor().getTilesetContainer().repaint();
 //		Editor.getCurrentEditor().getFile().write(getFilePath());
 	}
 	

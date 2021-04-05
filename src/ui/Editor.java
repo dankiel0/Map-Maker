@@ -6,6 +6,9 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 
+import map.MapContainer;
+import tileset.TilesetContainer;
+
 //import file.EditableFile;
 
 // class Editor represents a workspace for developing tile based maps.
@@ -19,7 +22,7 @@ public class Editor extends WindowAdapter {
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
 	
-	//	private EditableFile file = new EditableFile();
+//	private EditableFile file = new EditableFile();
 	
 	// creates editor without open map file.
 	public Editor() {
@@ -84,6 +87,18 @@ public class Editor extends WindowAdapter {
 		frame.setTitle(title + fileName);
 	}
 	
+	static class Plot {
+		String cropType;
+		
+		public Plot(String cropType) {
+			this.cropType = cropType;
+		}
+		
+		public String getCropType() {
+			return cropType;
+		}
+	}
+	
 	// sets the current editor to the one that's active.
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
@@ -123,7 +138,13 @@ public class Editor extends WindowAdapter {
 //		file.close();
 		
 		// if there is no current active editor, end the program.
-		if (!Editor.currentEditor.frame.isActive())
+		if (!Editor.getCurrentEditor().frame.isActive())
 			System.exit(0);
 	}
 }
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package ui;
+package tileset;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,23 +6,18 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
-
-import elements.Tileset;
 
 public class TilesetContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Dimension containerSize = new Dimension(640, 640);
 	
-	private Tileset tileset;
+	private Tileset tileset = new Tileset();
 	
 	public TilesetContainer() {
-		tileset = new Tileset();
-		
 		MouseHandler mouseHandler = new MouseHandler();
 		
 		super.addMouseListener(mouseHandler);
@@ -47,11 +42,6 @@ public class TilesetContainer extends JPanel {
 		tileset.render(graphics);
 	}
 	
-	public void setTileset(BufferedImage image) {
-		tileset.setTileset(image);
-		repaint();
-	}
-	
 	public Tileset getTileset() {
 		return tileset;
 	}
@@ -73,7 +63,7 @@ public class TilesetContainer extends JPanel {
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = tileset.getTilesetLocation();
+				Point location = tileset.tilesetLocation;
 				
 				offset.x = e.getX() - location.x;
 				offset.y = e.getY() - location.y;
@@ -95,7 +85,7 @@ public class TilesetContainer extends JPanel {
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = tileset.getTilesetLocation();
+				Point location = tileset.tilesetLocation;
 				
 				location.x = e.getX() - offset.x;
 				location.y = e.getY() - offset.y;

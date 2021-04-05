@@ -9,6 +9,7 @@ import javax.swing.JMenuItem;
 
 import file.FileUtil;
 import help.Help;
+import map.Map;
 
 public class NavBar implements ActionListener {
 	private JMenuBar navBar = new JMenuBar();
@@ -84,16 +85,16 @@ public class NavBar implements ActionListener {
 			Editor.getCurrentEditor().dispose();
 			break;
 		case "Edit Collisions":
-			System.out.println("Edit Collisions");
-			break;
-		case "Set Tiles":
-			System.out.println("Set Tiles");
+			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.COLLISIONS);
+			Editor.getCurrentEditor().getMapContainer().repaint();
 			break;
 		case "Edit Background":
-			System.out.println("Edit Background");
+			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.BACKGROUND);
+			Editor.getCurrentEditor().getMapContainer().repaint();
 			break;
 		case "Edit Foreground":
-			System.out.println("Edit Foreground");
+			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.FOREGROUND);
+			Editor.getCurrentEditor().getMapContainer().repaint();
 			break;
 		case "Explore Map":
 			System.out.println("Explore Map");

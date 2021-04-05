@@ -1,4 +1,4 @@
-package ui;
+package map;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -9,19 +9,14 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
-import elements.Map;
-import tile.Tile;
-
 public class MapContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	private Dimension containerSize = new Dimension(640, 640);
 	
-	private Map map;
+	private Map map = new Map();
 	
 	public MapContainer() {
-		map = new Map();
-		
 		MouseHandler mouseHandler = new MouseHandler();
 		
 		super.addMouseListener(mouseHandler);
@@ -45,12 +40,15 @@ public class MapContainer extends JPanel {
 		map.render(graphics);
 	}
 	
+	public Map getMap() {
+		return map;
+	}
+	
 	private class MouseHandler extends MouseAdapter {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				map.addTile(new Tile(e.getX(), e.getY(), Editor.getCurrentEditor().getTilesetContainer().getTileset().getSelectedTileIndex(), Editor.getCurrentEditor().getTilesetContainer().getTileset().getTile(Editor.getCurrentEditor().getTilesetContainer().getTileset().getSelectedTileIndex())));
-				repaint();
+				
 			}
 			
 			else if (SwingUtilities.isMiddleMouseButton(e)) {

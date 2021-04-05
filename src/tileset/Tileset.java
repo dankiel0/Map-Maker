@@ -1,4 +1,4 @@
-package elements;
+package tileset;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,19 +7,18 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import tile.Tile;
-import ui.Editor;
 
 public class Tileset {
 	private Dimension tilesetSize, tileGrid;
 	
 	private BufferedImage[] tiles;
 	
-	private int selectedTileIndex;
+	protected int selectedTileIndex;
 	
-	private Point tilesetLocation = new Point();
+	protected Point tilesetLocation = new Point();
 	
 	public void setTileset(BufferedImage tileset) {
-		if (tiles != null)
+		if (exists())
 			return;
 		
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
@@ -49,18 +48,6 @@ public class Tileset {
 		selectedTileIndex = y * tileGrid.width + x;
 	}
 	
-	public BufferedImage getTile(int index) {
-		return tiles[index];
-	}
-	
-	public int getSelectedTileIndex() {
-		return selectedTileIndex;
-	}
-	
-	public Point getTilesetLocation() {
-		return tilesetLocation;
-	}
-	
 	private void renderSelectedTile(Graphics graphics) {
 		// draws background.
 		graphics.setColor(Color.BLACK);
@@ -73,7 +60,7 @@ public class Tileset {
 			graphics.setColor(Color.BLACK);
 		}
 		
-		else graphics.drawImage(getTile(selectedTileIndex), 304, 16, null);
+		else graphics.drawImage(tiles[selectedTileIndex], 304, 16, null);
 	}
 	
 	public boolean exists() {
@@ -81,34 +68,36 @@ public class Tileset {
 	}
 	
 	public void render(Graphics graphics) {
-		renderSelectedTile(graphics);
-		
-		graphics.drawString("Tileset", 0, 74);
-		graphics.drawString("<" + tilesetLocation.x + ", " + tilesetLocation.y + ">", 0, 89);
-		
-		if (!exists())
-			return;
-		
-		int counter = 0;
-		while (counter < tiles.length) {
-			// calculates the x and y of each tile using only the tile index.
-			int x = counter % tileGrid.width * Tile.getWidth();
-			int y = counter / tileGrid.width * Tile.getHeight();
-			
-			// draws the individual tile to the panel with the offsets.
-			graphics.drawImage(getTile(counter), x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
-			
-			// highlights the selected tile.
-			if (counter == selectedTileIndex) {
-				graphics.setColor(Color.RED);
-				graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
+		if (exists()) {
+			int counter = 0;
+			while (counter < tiles.length) {
+				// calculates the x and y of each tile using only the tile index.
+				int x = counter % tileGrid.width * Tile.getWidth();
+				int y = counter / tileGrid.width * Tile.getHeight();
+				
+				// draws the individual tile to the panel with the offsets.
+				graphics.drawImage(tiles[counter], x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
+				
+				// highlights the selected tile.
+				if (counter == selectedTileIndex) {
+					graphics.setColor(Color.RED);
+					graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
+				}
+				
+				counter++;
 			}
 			
-			counter++;
+			// draws border around tileset.
+			graphics.setColor(Color.BLACK);
+			graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
 		}
 		
-		// draws border around tileset.
+		renderSelectedTile(graphics);
+		
+		graphics.setColor(Color.WHITE);
+		graphics.drawString("Tileset", 0, 10);
+		graphics.drawString("Coor: <" + tilesetLocation.x + ", " + tilesetLocation.y + ">", 0, 20);
+		graphics.drawString("Index: " + selectedTileIndex, 0, 30);
 		graphics.setColor(Color.BLACK);
-		graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
 	}
 }
