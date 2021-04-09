@@ -3,11 +3,14 @@ package map;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+
+import ui.Editor;
 
 public class MapContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -45,33 +48,50 @@ public class MapContainer extends JPanel {
 	}
 	
 	private class MouseHandler extends MouseAdapter {
+		private Point offset = new Point();
+		
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				
+				Editor.addTile(e.getX(), e.getY());
+				repaint();
 			}
 			
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
+				Point location = map.mapLocation;
 				
+				offset.x = e.getX() - location.x;
+				offset.y = e.getY() - location.y;
+				
+				repaint();
 			}
 			
 			else if (SwingUtilities.isRightMouseButton(e)) {
-				
+				Editor.removeTile(e.getX(), e.getY());
+				repaint();
 			}
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				
+				Editor.addTile(e.getX(), e.getY());
+				repaint();
 			}
 			
+			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
+				Point location = map.mapLocation;
 				
+				location.x = e.getX() - offset.x;
+				location.y = e.getY() - offset.y;
+				
+				repaint();
 			}
 			
 			else if (SwingUtilities.isRightMouseButton(e)) {
-				
+				Editor.removeTile(e.getX(), e.getY());
+				repaint();
 			}
 		}
 	}

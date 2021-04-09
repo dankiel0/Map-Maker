@@ -3,9 +3,14 @@ package ui;
 import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
+import file.EditableFile;
+import map.Map;
+import map.Map.State;
 import map.MapContainer;
 import tileset.TilesetContainer;
 
@@ -22,10 +27,12 @@ public class Editor extends WindowAdapter {
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
 	
-//	private EditableFile file = new EditableFile();
+	private EditableFile file = new EditableFile();
 	
 	// creates editor without open map file.
 	public Editor() {
+		currentEditor = this;
+		
 		initUI();
 		
 		// "Untitled" is the default name for a new editor without an open map file.
@@ -38,8 +45,24 @@ public class Editor extends WindowAdapter {
 		addFileNameToTitle(fileName);
 	}
 	
-	public static Editor getCurrentEditor() {
-		return currentEditor;
+	public static void setMapState(State state) {
+		currentEditor.getMapContainer().getMap().setState(state);
+	}
+	
+	public static void setTileset(BufferedImage img) {
+		currentEditor.getTilesetContainer().getTileset().setTileset(img);
+	}
+	
+	public static int getSelectedTileIndex() {
+		return currentEditor.getTilesetContainer().getTileset().getSelectedTileIndex();
+	}
+	
+	public static void repaintMap() {
+		currentEditor.getMapContainer().repaint();
+	}
+	
+	public static void repaintTileset() {
+		currentEditor.getTilesetContainer().repaint();
 	}
 	
 	public MapContainer getMapContainer() {
@@ -50,13 +73,41 @@ public class Editor extends WindowAdapter {
 		return tilesetContainer;
 	}
 	
+	public static State getMapState() {
+		return currentEditor.getMapContainer().getMap().getState();
+	}
+	
+	public static BufferedImage getTile(int index) {
+		return currentEditor.getTilesetContainer().getTileset().getTile(index);
+	}
+	
+	public static void addTile(int mouseX, int mouseY) {
+		if (Editor.getMapState() == Map.State.BACKGROUND) {
+			currentEditor.getMapContainer().getMap().addBackgroundTile(getSelectedTileIndex(), mouseX, mouseY);
+		}
+		
+		else if (Editor.getMapState() == Map.State.FOREGROUND) {
+			currentEditor.getMapContainer().getMap().addForegroundTile(getSelectedTileIndex(), mouseX, mouseY);
+		}
+	}
+	
+	public static void removeTile(int mouseX, int mouseY) {
+		if (Editor.getMapState() == Map.State.BACKGROUND) {
+			currentEditor.getMapContainer().getMap().removeBackgroundTile(mouseX, mouseY);
+		}
+		
+		else if (Editor.getMapState() == Map.State.FOREGROUND) {
+			currentEditor.getMapContainer().getMap().removeForegroundTile(mouseX, mouseY);
+		}
+	}
+	
 //	public EditableFile getFile() {
 //		return file;
 //	}
 	
 	// exits the editor.
-	public void dispose() {
-		frame.dispose();
+	public static void dispose() {
+		currentEditor.frame.dispose();
 	}
 	
 	private void initUI() {
@@ -82,21 +133,21 @@ public class Editor extends WindowAdapter {
 		frame.setVisible(true);
 	}
 	
-	// adds the open file to the frame title.
-	public void addFileNameToTitle(String fileName) {
-		frame.setTitle(title + fileName);
+	public static void setFile(String path) {
+		currentEditor.file.setFile(path);
 	}
 	
-	static class Plot {
-		String cropType;
-		
-		public Plot(String cropType) {
-			this.cropType = cropType;
-		}
-		
-		public String getCropType() {
-			return cropType;
-		}
+	public static boolean fileHasUnsavedChanges() {
+		return currentEditor.file.hasUnsavedChanges();
+	}
+	
+	public static boolean fileExists() {
+		return currentEditor.file.exists();
+	}
+	
+	// adds the open file to the frame title.
+	public static void addFileNameToTitle(String fileName) {
+		currentEditor.frame.setTitle(currentEditor.title + fileName);
 	}
 	
 	// sets the current editor to the one that's active.
@@ -109,25 +160,25 @@ public class Editor extends WindowAdapter {
 	// show "are you sure???" screen, if work is not saved.
 	@Override
 	public void windowClosing(WindowEvent e) {
-//		if (file.hasUnsavedChanges()) {
-//			int result =
-//					JOptionPane.showOptionDialog(null,
-//					"Do you want to save changes to " + file.getFilePath(),
-//					"Map Maker",
-//					JOptionPane.YES_NO_CANCEL_OPTION,
-//					JOptionPane.WARNING_MESSAGE,
-//					null,
-//					options,
-//					null);
-//			
-//			if (result == JOptionPane.YES_OPTION)
-//				file.save();
-//			
-//			else if(result == JOptionPane.NO_OPTION)
-//				frame.dispose();
-//		}
-//		
-//		else frame.dispose();
+		if (file.hasUnsavedChanges()) {
+			int result =
+					JOptionPane.showOptionDialog(null,
+					"Do you want to save changes to " + file.getFilePath(),
+					"Map Maker",
+					JOptionPane.YES_NO_CANCEL_OPTION,
+					JOptionPane.WARNING_MESSAGE,
+					null,
+					options,
+					null);
+			
+			if (result == JOptionPane.YES_OPTION)
+				file.save();
+			
+			else if(result == JOptionPane.NO_OPTION)
+				frame.dispose();
+		}
+		
+		else frame.dispose();
 		frame.dispose();
 	}
 	
@@ -135,16 +186,10 @@ public class Editor extends WindowAdapter {
 	// otherwise the program will not terminate.
 	@Override
 	public void windowClosed(WindowEvent e) {
-//		file.close();
+		file.close();
 		
 		// if there is no current active editor, end the program.
-		if (!Editor.getCurrentEditor().frame.isActive())
+		if (!currentEditor.frame.isActive())
 			System.exit(0);
 	}
 }
-
-
-
-
-
-

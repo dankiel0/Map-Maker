@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
-import tile.Tile;
-
 public class Tileset {
 	private Dimension tilesetSize, tileGrid;
 	
@@ -22,14 +20,14 @@ public class Tileset {
 			return;
 		
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
-		tileGrid = new Dimension(tileset.getWidth() / Tile.getWidth(), tileset.getHeight() / Tile.getHeight());
+		tileGrid = new Dimension(tileset.getWidth() / 32, tileset.getHeight() / 32);
 		
 		tiles = new BufferedImage[tileGrid.width * tileGrid.height];
 		
 		int counter = 0;
-		for (int y = 0; y < tileset.getHeight(); y += Tile.getHeight())
-			for (int x = 0; x < tileset.getWidth(); x += Tile.getWidth())
-				tiles[counter++] = tileset.getSubimage(x, y, Tile.getWidth(), Tile.getHeight());
+		for (int y = 0; y < tileset.getHeight(); y += 32)
+			for (int x = 0; x < tileset.getWidth(); x += 32)
+				tiles[counter++] = tileset.getSubimage(x, y, 32, 32);
 	}
 	
 	public void setSelectedTileIndex(int mouseX, int mouseY) {
@@ -37,15 +35,23 @@ public class Tileset {
 			return;
 		if (mouseX > tilesetLocation.x + tilesetSize.width - 1)
 			return;
-		if (mouseY < tilesetLocation.y + Tile.getHeight() * 2)
+		if (mouseY < tilesetLocation.y + 64)
 			return;
-		if (mouseY > tilesetLocation.y + tilesetSize.height + Tile.getHeight() * 2 - 1)
+		if (mouseY > tilesetLocation.y + tilesetSize.height + 63)
 			return;
 		
-		int x = (mouseX - tilesetLocation.x) / Tile.getWidth();
-		int y = (mouseY - tilesetLocation.y) / Tile.getHeight() - 2;
+		int x = (mouseX - tilesetLocation.x) / 32;
+		int y = ((mouseY - tilesetLocation.y) / 32) - 2;
 		
 		selectedTileIndex = y * tileGrid.width + x;
+	}
+	
+	public int getSelectedTileIndex() {
+		return selectedTileIndex;
+	}
+	
+	public BufferedImage getTile(int index) {
+		return tiles[index];
 	}
 	
 	private void renderSelectedTile(Graphics graphics) {
@@ -72,16 +78,16 @@ public class Tileset {
 			int counter = 0;
 			while (counter < tiles.length) {
 				// calculates the x and y of each tile using only the tile index.
-				int x = counter % tileGrid.width * Tile.getWidth();
-				int y = counter / tileGrid.width * Tile.getHeight();
+				int x = counter % tileGrid.width * 32;
+				int y = counter / tileGrid.width * 32;
 				
 				// draws the individual tile to the panel with the offsets.
-				graphics.drawImage(tiles[counter], x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, null);
+				graphics.drawImage(tiles[counter], x + tilesetLocation.x, y + 64 + tilesetLocation.y, null);
 				
 				// highlights the selected tile.
 				if (counter == selectedTileIndex) {
 					graphics.setColor(Color.RED);
-					graphics.drawRect(x + tilesetLocation.x, y + (Tile.getHeight() * 2) + tilesetLocation.y, Tile.getWidth() - 1, Tile.getHeight() - 1);
+					graphics.drawRect(x + tilesetLocation.x, y + 64 + tilesetLocation.y, 31, 31);
 				}
 				
 				counter++;
@@ -89,14 +95,14 @@ public class Tileset {
 			
 			// draws border around tileset.
 			graphics.setColor(Color.BLACK);
-			graphics.drawRect(tilesetLocation.x, tilesetLocation.y + Tile.getHeight() * 2, tilesetSize.width, tilesetSize.height);
+			graphics.drawRect(tilesetLocation.x, tilesetLocation.y + 64, tilesetSize.width, tilesetSize.height);
 		}
 		
 		renderSelectedTile(graphics);
 		
 		graphics.setColor(Color.WHITE);
 		graphics.drawString("Tileset", 0, 10);
-		graphics.drawString("Coor: <" + tilesetLocation.x + ", " + tilesetLocation.y + ">", 0, 20);
+		graphics.drawString("Coor: <" + (-tilesetLocation.x) + ", " + (-tilesetLocation.y) + ">", 0, 20);
 		graphics.drawString("Index: " + selectedTileIndex, 0, 30);
 		graphics.setColor(Color.BLACK);
 	}

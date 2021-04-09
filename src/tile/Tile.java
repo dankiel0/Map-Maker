@@ -3,64 +3,49 @@ package tile;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
+import ui.Editor;
+
 // a tile.
 public class Tile {
-	private static int width = 32;
-	private static int height = 32;
+	private double x;
+	private double y;
 	
-	private int x;
-	private int y;
-	
-	private int tileIndex;
+	private int index;
 	
 	private boolean isSolid;
 	
 	private BufferedImage tile;
 	
-	public Tile(int x, int y, int tileIndex, BufferedImage img) {
+	public Tile(int x, int y, int tileIndex) {
 		this.x = x;
 		this.y = y;
 		
-		this.tileIndex = tileIndex;
+		index = tileIndex;
 		
-		tile = img;
+		tile = Editor.getTile(index);
 	}
 	
-	public int getX() {
+	public int getIndex() {
+		return index;
+	}
+	
+	public double getX() {
 		return x;
 	}
 	
-	public int getY() {
+	public double getY() {
 		return y;
 	}
 	
-	public static void setWidth(int width) {
-		// cannot set the tile width if it's already set.
-		// cannot set the tile width if it's too small.
-		if(Tile.width != -1 || width <= 1)
-			return;
-		
-		Tile.width = width;
+	public void setSolid(boolean solid) {
+		isSolid = solid;
 	}
 	
-	public static int getWidth() {
-		return Tile.width;
+	public boolean isSolid() {
+		return isSolid;
 	}
 	
-	public static void setHeight(int height) {
-		// cannot set the tile height if it's already set.
-		// cannot set the tile height if it's too small.
-		if(Tile.height != -1 || height <= 1)
-			return;
-		
-		Tile.height = height;
-	}
-	
-	public static int getHeight() {
-		return Tile.height;
-	}
-	
-	public void render(Graphics graphics) {
-		graphics.drawImage(tile, x, y, null);
+	public void render(Graphics graphics, int offsetX, int offsetY) {
+		graphics.drawImage(tile, (int) (x + offsetX), (int) (y + offsetY), null);
 	}
 }

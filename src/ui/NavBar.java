@@ -82,19 +82,19 @@ public class NavBar implements ActionListener {
 			FileUtil.getInstance().saveAs();
 			break;
 		case "Exit":
-			Editor.getCurrentEditor().dispose();
+			Editor.dispose();
 			break;
 		case "Edit Collisions":
-			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.COLLISIONS);
-			Editor.getCurrentEditor().getMapContainer().repaint();
+			Editor.setMapState(Map.State.COLLISIONS);
+			Editor.repaintMap();
 			break;
 		case "Edit Background":
-			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.BACKGROUND);
-			Editor.getCurrentEditor().getMapContainer().repaint();
+			Editor.setMapState(Map.State.BACKGROUND);
+			Editor.repaintMap();
 			break;
 		case "Edit Foreground":
-			Editor.getCurrentEditor().getMapContainer().getMap().setState(Map.State.FOREGROUND);
-			Editor.getCurrentEditor().getMapContainer().repaint();
+			Editor.setMapState(Map.State.FOREGROUND);
+			Editor.repaintMap();
 			break;
 		case "Explore Map":
 			System.out.println("Explore Map");

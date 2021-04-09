@@ -35,8 +35,8 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-		Editor.getCurrentEditor().getTilesetContainer().getTileset().setTileset(ImageLoader.loadFromDrive(getFilePath()));
-		Editor.getCurrentEditor().getTilesetContainer().repaint();
+		Editor.setTileset(ImageLoader.loadFromDrive(getFilePath()));
+		Editor.repaintTileset();
 //		Editor.getCurrentEditor().getFile().write(getFilePath());
 	}
 	
@@ -47,20 +47,17 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-//		Editor.getCurrentEditor().getFile().setFile(getFilePath());
+		Editor.setFile(getFilePath());
 	}
 	
 	public void save() {
-//		if (!Editor.getCurrentEditor().getFile().exists()) {
-//			saveAs();
-//			return;
-//		}
-//		
-//		if (!Editor.getCurrentEditor().getFile().hasUnsavedChanges())
-//			return;
+		if (!Editor.fileExists()) {
+			saveAs();
+			return;
+		}
 		
-		fileChooser.setDialogTitle("Save");
-		fileChooser.showSaveDialog(null);
+		if (!Editor.fileHasUnsavedChanges())
+			return;
 	}
 	
 	private String getFilePath() {
