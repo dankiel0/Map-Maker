@@ -4,14 +4,17 @@ import java.awt.FlowLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import file.EditableFile;
+import file.FileUtil;
 import map.Map;
 import map.Map.State;
 import map.MapContainer;
+import tile.Tile;
 import tileset.TilesetContainer;
 
 //import file.EditableFile;
@@ -49,8 +52,8 @@ public class Editor extends WindowAdapter {
 		currentEditor.getMapContainer().getMap().setState(state);
 	}
 	
-	public static void setTileset(BufferedImage img) {
-		currentEditor.getTilesetContainer().getTileset().setTileset(img);
+	public static void setTileset(String tilesetPath) {
+		currentEditor.getTilesetContainer().getTileset().setTileset(tilesetPath);
 	}
 	
 	public static int getSelectedTileIndex() {
@@ -145,6 +148,38 @@ public class Editor extends WindowAdapter {
 		return currentEditor.file.exists();
 	}
 	
+	public static String getTilesetPath() {
+		return currentEditor.tilesetContainer.getTileset().getPath();
+	}
+	
+	public static int getMapWidth() {
+		return currentEditor.getMapContainer().getMap().getWidth();
+	}
+	
+	public static int getMapHeight() {
+		return currentEditor.getMapContainer().getMap().getHeight();
+	}
+	
+	public static int getMapX() {
+		return currentEditor.getMapContainer().getMap().getX();
+	}
+	
+	public static int getMapY() {
+		return currentEditor.getMapContainer().getMap().getY();
+	}
+	
+	public static ArrayList<Tile> getBackground() {
+		return currentEditor.getMapContainer().getMap().getBackground();
+	}
+	
+	public static ArrayList<Tile> getForeground() {
+		return currentEditor.getMapContainer().getMap().getForeground();
+	}
+	
+	public static void writeToFile(String contents) {
+		currentEditor.file.write(contents);
+	}
+	
 	// adds the open file to the frame title.
 	public static void addFileNameToTitle(String fileName) {
 		currentEditor.frame.setTitle(currentEditor.title + fileName);
@@ -172,14 +207,13 @@ public class Editor extends WindowAdapter {
 					null);
 			
 			if (result == JOptionPane.YES_OPTION)
-				file.save();
+				file.finalSave();
 			
 			else if(result == JOptionPane.NO_OPTION)
 				frame.dispose();
 		}
 		
 		else frame.dispose();
-		frame.dispose();
 	}
 	
 	// edge case: when the last editor is closed, the program must end.

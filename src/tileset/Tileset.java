@@ -6,6 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import resource_loaders.ImageLoader;
+
 public class Tileset {
 	private Dimension tilesetSize, tileGrid;
 	
@@ -15,9 +17,15 @@ public class Tileset {
 	
 	protected Point tilesetLocation = new Point();
 	
-	public void setTileset(BufferedImage tileset) {
+	private String path;
+	
+	public void setTileset(String tilesetPath) {
 		if (exists())
 			return;
+		
+		path = tilesetPath;
+		
+		BufferedImage tileset = ImageLoader.loadFromDrive(tilesetPath);
 		
 		tilesetSize = new Dimension(tileset.getWidth(), tileset.getHeight());
 		tileGrid = new Dimension(tileset.getWidth() / 32, tileset.getHeight() / 32);
@@ -28,6 +36,10 @@ public class Tileset {
 		for (int y = 0; y < tileset.getHeight(); y += 32)
 			for (int x = 0; x < tileset.getWidth(); x += 32)
 				tiles[counter++] = tileset.getSubimage(x, y, 32, 32);
+	}
+	
+	public String getPath() {
+		return path;
 	}
 	
 	public void setSelectedTileIndex(int mouseX, int mouseY) {

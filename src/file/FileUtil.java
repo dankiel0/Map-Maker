@@ -35,9 +35,9 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
-		Editor.setTileset(ImageLoader.loadFromDrive(getFilePath()));
+		Editor.setTileset(getFilePath());
 		Editor.repaintTileset();
-//		Editor.getCurrentEditor().getFile().write(getFilePath());
+		Editor.writeToFile(getFilePath());
 	}
 	
 	public void saveAs() {
@@ -48,6 +48,8 @@ public class FileUtil {
 			return;
 		
 		Editor.setFile(getFilePath());
+		
+		save();
 	}
 	
 	public void save() {

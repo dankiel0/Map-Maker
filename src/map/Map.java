@@ -136,6 +136,22 @@ public class Map {
 		return (int) (((mapBiggestY - mapSmallestY) / 32) + 1);
 	}
 	
+	public int getX() {
+		return mapLocation.x;
+	}
+	
+	public int getY() {
+		return mapLocation.y;
+	}
+	
+	public ArrayList<Tile> getBackground() {
+		return backgroundTiles;
+	}
+	
+	public ArrayList<Tile> getForeground() {
+		return foregroundTiles;
+	}
+	
 	public void render(Graphics graphics) {
 		for (Tile tile : backgroundTiles)
 			tile.render(graphics, mapLocation.x, mapLocation.y);
