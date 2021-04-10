@@ -1,8 +1,13 @@
 package file;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import javax.swing.JFileChooser;
 
-import resource_loaders.ImageLoader;
+import tile.Tile;
 import ui.Editor;
 
 public class FileUtil {
@@ -26,6 +31,68 @@ public class FileUtil {
 		if (fileChooser.getSelectedFile() == null)
 			return;
 		
+		Scanner in = null;
+		
+		try {
+			in = new Scanner(new FileReader(getFilePath()));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		Editor.setTileset(in.nextLine());
+		Editor.setMapX(in.nextInt());
+		Editor.setMapY(in.nextInt());
+		
+		int width = in.nextInt();
+		int height = in.nextInt();
+		in.nextLine();
+		in.nextLine();
+		
+		ArrayList<Tile> tempBackground = new ArrayList<Tile>();
+		
+		a: for (int j = 0; j < height * 32; j += 32) {
+			for (int i = 0; i < width * 32; i += 32) {
+				String stuff = in.nextLine();
+				if (!stuff.equals("FOREGROUND")) {
+					tempBackground.add(new Tile(i, j, Integer.parseInt(stuff)));
+					System.out.println(stuff);
+				} else {
+					break a;
+				}
+			}
+		}
+		
+		ArrayList<Tile> tempForeground = new ArrayList<Tile>();
+		
+		in.nextLine();
+		
+		b: for (int j = 0; j < height * 32; j += 32) {
+			for (int i = 0; i < width * 32; i += 32) {
+				String stuff = in.nextLine();
+				if (!stuff.equals("COLLISIONS")) {
+					tempForeground.add(new Tile(i, j, Integer.parseInt(stuff)));
+					System.out.println(stuff);
+				} else {
+					break b;
+				}
+			}
+		}
+		
+		for (int i = 0; i < tempBackground.size(); i++) {
+			if (in.hasNext()) {
+				tempBackground.get(i).setSolid(in.nextInt() == 1 ? true : false);
+			}
+		}
+		
+		in.close();
+		
+		Editor.setBackground(tempBackground);
+		Editor.setForeground(tempForeground);
+		
+		Editor.repaintMap();
+		Editor.repaintTileset();
+		
+		Editor.setFile(getFilePath());
 	}
 	
 	public void openTileset() {
@@ -37,7 +104,6 @@ public class FileUtil {
 		
 		Editor.setTileset(getFilePath());
 		Editor.repaintTileset();
-		Editor.writeToFile(getFilePath());
 	}
 	
 	public void saveAs() {

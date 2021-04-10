@@ -54,6 +54,7 @@ public class MapContainer extends JPanel {
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
 				Editor.addTile(e.getX(), e.getY());
+				
 				repaint();
 			}
 			
@@ -70,6 +71,7 @@ public class MapContainer extends JPanel {
 				Editor.removeTile(e.getX(), e.getY());
 				repaint();
 			}
+			Editor.setTrue();
 		}
 		
 		@Override
@@ -93,6 +95,7 @@ public class MapContainer extends JPanel {
 				Editor.removeTile(e.getX(), e.getY());
 				repaint();
 			}
+			Editor.setTrue();
 		}
 	}
 }

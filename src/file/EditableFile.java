@@ -2,6 +2,7 @@ package file;
 
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import tile.Tile;
 import ui.Editor;
@@ -12,8 +13,6 @@ public class EditableFile {
 	private String filePath = "Untitled";
 	
 	private PrintWriter writer;
-	
-	private String fileContents = "";
 	
 	public void setFile(String path) {
 		filePath = path;
@@ -31,18 +30,16 @@ public class EditableFile {
 		return hasUnsavedChanges;
 	}
 	
+	public void setTrue() {
+		hasUnsavedChanges = true;
+	}
+	
 	public boolean exists() {
 		return writer != null;
 	}
 	
 	public String getFilePath() {
 		return filePath;
-	}
-	
-	public void write(String str) {
-		fileContents += str + "\n";
-		
-		hasUnsavedChanges = true;
 	}
 	
 	public void finalSave() {
@@ -57,13 +54,51 @@ public class EditableFile {
 		
 		writer.write("BACKGROUND\n");
 		
+		ArrayList<Tile> temp1 = new ArrayList<Tile>();
+		
+		System.out.println(Editor.getMapX());
+		System.out.println(Editor.getMapY());
+		
+		System.out.println(Editor.getMapWidth());
+		System.out.println(Editor.getMapHeight());
+		
+		for(int i = Editor.getSmallestY(); i < Editor.getBiggestY(); i += 32)
+			for(int j = Editor.getSmallestX(); j < Editor.getBiggestX(); j += 32) {
+				a: for(Tile tile : Editor.getBackground()) {
+					if(tile.getX() == j && tile.getY() == i) {
+						System.out.println("loop:" + j + ", " + i);
+						System.out.println("actual:" + tile.getX() + ", " + tile.getY());
+						
+						temp1.add(tile);
+						break a;
+					}
+				}
+			}
+		
+		System.out.println("REALREALREALREALREAL");
+		
 		for (Tile tile : Editor.getBackground()) {
-			writer.write(tile.getIndex() + "\n");
+			System.out.println(tile.getX() + ", " + tile.getY());
 		}
+		
+		for(Tile tile : temp1)
+			writer.write(String.valueOf(tile.getIndex()) + "\n");
 		
 		writer.write("FOREGROUND\n");
 		
-		// put tiles in order
+		ArrayList<Tile> temp2 = new ArrayList<Tile>();
+		
+		for(int i = Editor.getSmallestY(); i < Editor.getBiggestY(); i += 32)
+			for(int j = Editor.getSmallestX(); j < Editor.getBiggestX(); j += 32) {
+				a: for(Tile tile : Editor.getForeground())
+					if(tile.getX() == j && tile.getY() == i) {
+						temp2.add(tile);
+						break a;
+					}
+			}
+		
+		for(Tile tile : temp2)
+			writer.write(String.valueOf(tile.getIndex()) + "\n");
 		
 		for (Tile tile : Editor.getForeground()) {
 			writer.write(tile.getIndex() + "\n");
@@ -75,8 +110,6 @@ public class EditableFile {
 		for (Tile tile : Editor.getBackground()) {
 			writer.write((tile.isSolid() ? 1 : 0) + "\n");
 		}
-		
-		fileContents = "";
 		
 		hasUnsavedChanges = false;
 	}

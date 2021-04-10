@@ -10,7 +10,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import file.EditableFile;
-import file.FileUtil;
 import map.Map;
 import map.Map.State;
 import map.MapContainer;
@@ -92,6 +91,18 @@ public class Editor extends WindowAdapter {
 		else if (Editor.getMapState() == Map.State.FOREGROUND) {
 			currentEditor.getMapContainer().getMap().addForegroundTile(getSelectedTileIndex(), mouseX, mouseY);
 		}
+		
+		else if (Editor.getMapState() == Map.State.COLLISIONS) {
+			currentEditor.getMapContainer().getMap().addCollision(mouseX, mouseY);
+		}
+	}
+	
+	public static void highlightBackground() {
+		currentEditor.getMapContainer().getMap().triggerBackground();
+	}
+	
+	public static void highlightForeground() {
+		currentEditor.getMapContainer().getMap().triggerForeground();
 	}
 	
 	public static void removeTile(int mouseX, int mouseY) {
@@ -101,6 +112,10 @@ public class Editor extends WindowAdapter {
 		
 		else if (Editor.getMapState() == Map.State.FOREGROUND) {
 			currentEditor.getMapContainer().getMap().removeForegroundTile(mouseX, mouseY);
+		}
+		
+		else if (Editor.getMapState() == Map.State.COLLISIONS) {
+			currentEditor.getMapContainer().getMap().removeCollision(mouseX, mouseY);
 		}
 	}
 	
@@ -156,6 +171,22 @@ public class Editor extends WindowAdapter {
 		return currentEditor.getMapContainer().getMap().getWidth();
 	}
 	
+	public static void setBackground(ArrayList<Tile> tiles) {
+		currentEditor.getMapContainer().getMap().setBackground(tiles);
+	}
+	
+	public static void setForeground(ArrayList<Tile> tiles) {
+		currentEditor.getMapContainer().getMap().setForeground(tiles);
+	}
+	
+	public static void setMapX(int x) {
+		currentEditor.getMapContainer().getMap().setMapX(x);
+	}
+	
+	public static void setMapY(int y) {
+		currentEditor.getMapContainer().getMap().setMapX(y);
+	}
+	
 	public static int getMapHeight() {
 		return currentEditor.getMapContainer().getMap().getHeight();
 	}
@@ -176,10 +207,6 @@ public class Editor extends WindowAdapter {
 		return currentEditor.getMapContainer().getMap().getForeground();
 	}
 	
-	public static void writeToFile(String contents) {
-		currentEditor.file.write(contents);
-	}
-	
 	// adds the open file to the frame title.
 	public static void addFileNameToTitle(String fileName) {
 		currentEditor.frame.setTitle(currentEditor.title + fileName);
@@ -189,6 +216,26 @@ public class Editor extends WindowAdapter {
 	@Override
 	public void windowGainedFocus(WindowEvent e) {
 		currentEditor = this;
+	}
+	
+	public static void setTrue() {
+		currentEditor.file.setTrue();
+	}
+	
+	public static int getSmallestX() {
+		return currentEditor.getMapContainer().getMap().getSmallestX();
+	}
+	
+	public static int getSmallestY() {
+		return currentEditor.getMapContainer().getMap().getSmallestY();
+	}
+	
+	public static int getBiggestX() {
+		return currentEditor.getMapContainer().getMap().getBiggestX();
+	}
+	
+	public static int getBiggestY() {
+		return currentEditor.getMapContainer().getMap().getBiggestY();
 	}
 	
 	public static Object[] options = {"Save", "Don't Save", "Cancel"};

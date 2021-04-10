@@ -34,7 +34,9 @@ public class NavBar implements ActionListener {
 		
 		navBar.add(makeMenu("View",
 				makeMenuItem("Explore Map"),
-				makeMenuItem("Display Full Map")));
+				makeMenuItem("Display Full Map"),
+				makeMenuItem("Highlight/Un-Highlight Background"),
+				makeMenuItem("Highlight/Un-Highlight Foreground")));
 		
 		navBar.add(makeMenu("Help",
 				makeMenuItem("About Map Maker")));
@@ -98,6 +100,12 @@ public class NavBar implements ActionListener {
 			break;
 		case "Explore Map":
 			System.out.println("Explore Map");
+			break;
+		case "Highlight/Un-Highlight Background":
+			Editor.highlightBackground();
+			break;
+		case "Highlight/Un-Highlight Foreground":
+			Editor.highlightForeground();
 			break;
 		case "Display Full Map":
 			System.out.println("Display Full Map");

@@ -7,6 +7,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 
 import resource_loaders.ImageLoader;
+import ui.Editor;
 
 public class Tileset {
 	private Dimension tilesetSize, tileGrid;
@@ -22,6 +23,8 @@ public class Tileset {
 	public void setTileset(String tilesetPath) {
 		if (exists())
 			return;
+		
+		Editor.setTrue();
 		
 		path = tilesetPath;
 		
