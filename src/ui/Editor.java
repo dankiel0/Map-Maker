@@ -9,130 +9,117 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import file.EditableFile;
-import map.Map;
 import map.Map.State;
 import map.MapContainer;
 import tile.Tile;
 import tileset.TilesetContainer;
 
-//import file.EditableFile;
-
 // class Editor represents a workspace for developing tile based maps.
 // WindowAdapter is needed for checking window events.
 public class Editor extends WindowAdapter {
-	private static Editor currentEditor;
+	private static Editor editor = new Editor();
 	
-	private JFrame frame;
-	private String title = "Map Maker - ";
+	private static JFrame frame;
 	
 	private MapContainer mapContainer;
 	private TilesetContainer tilesetContainer;
 	
-	private EditableFile file = new EditableFile();
+	private boolean isDebugModeOn;
 	
 	// creates editor without open map file.
-	public Editor() {
-		currentEditor = this;
-		
+	private Editor() {
 		initUI();
+	}
+	
+	public static Editor getCurrentEditor() {
+		return editor;
+	}
+	
+	public String getMapData() {
+		String data = "";
 		
-		// "Untitled" is the default name for a new editor without an open map file.
-		addFileNameToTitle("Untitled");
-	}
-	
-	// creates editor with open map file.
-	public Editor(String fileName) {
-		this();
-		addFileNameToTitle(fileName);
-	}
-	
-	public static void setMapState(State state) {
-		currentEditor.getMapContainer().getMap().setState(state);
-	}
-	
-	public static void setTileset(String tilesetPath) {
-		currentEditor.getTilesetContainer().getTileset().setTileset(tilesetPath);
-	}
-	
-	public static int getSelectedTileIndex() {
-		return currentEditor.getTilesetContainer().getTileset().getSelectedTileIndex();
-	}
-	
-	public static void repaintMap() {
-		currentEditor.getMapContainer().repaint();
-	}
-	
-	public static void repaintTileset() {
-		currentEditor.getTilesetContainer().repaint();
-	}
-	
-	public MapContainer getMapContainer() {
-		return mapContainer;
-	}
-	
-	public TilesetContainer getTilesetContainer() {
-		return tilesetContainer;
-	}
-	
-	public static State getMapState() {
-		return currentEditor.getMapContainer().getMap().getState();
-	}
-	
-	public static BufferedImage getTile(int index) {
-		return currentEditor.getTilesetContainer().getTileset().getTile(index);
-	}
-	
-	public static void addTile(int mouseX, int mouseY) {
-		if (Editor.getMapState() == Map.State.BACKGROUND) {
-			currentEditor.getMapContainer().getMap().addBackgroundTile(getSelectedTileIndex(), mouseX, mouseY);
+		data += tilesetContainer.getTileset().getPath() + "\n";
+		
+		data += mapContainer.getMap().getX() + "\n";
+		data += mapContainer.getMap().getY() + "\n";
+		
+		data += mapContainer.getMap().getWidth() + "\n";
+		data += mapContainer.getMap().getHeight() + "\n";
+		
+		ArrayList<Tile> temp = new ArrayList<Tile>();
+		
+		for(int i = mapContainer.getMap().getSmallestY(); i < mapContainer.getMap().getBiggestY(); i += 32)
+			for(int j = mapContainer.getMap().getSmallestX(); j < mapContainer.getMap().getBiggestX(); j += 32) {
+				a: for(Tile tile : mapContainer.getMap().getTiles()) {
+					if(tile.getX() == j && tile.getY() == i) {
+						temp.add(tile);
+						break a;
+					}
+				}
+			}
+		
+		for (Tile tile : temp) {
+			data += tile.getBackgroundIndex() + "\n";
+			data += tile.getForegroundIndex() + "\n";
+			data += (tile.isSolid() ? 1 : 0) + "\n";
 		}
 		
-		else if (Editor.getMapState() == Map.State.FOREGROUND) {
-			currentEditor.getMapContainer().getMap().addForegroundTile(getSelectedTileIndex(), mouseX, mouseY);
-		}
-		
-		else if (Editor.getMapState() == Map.State.COLLISIONS) {
-			currentEditor.getMapContainer().getMap().addCollision(mouseX, mouseY);
-		}
+		return data;
 	}
 	
-	public static void highlightBackground() {
-		currentEditor.getMapContainer().getMap().triggerBackground();
+	public void setTiles(ArrayList<Tile> tiles) {
+		mapContainer.getMap().setTiles(tiles);
+		mapContainer.repaint();
 	}
 	
-	public static void highlightForeground() {
-		currentEditor.getMapContainer().getMap().triggerForeground();
+	public void setState(State state) {
+		mapContainer.getMap().setState(state);
+		mapContainer.repaint();
 	}
 	
-	public static void removeTile(int mouseX, int mouseY) {
-		if (Editor.getMapState() == Map.State.BACKGROUND) {
-			currentEditor.getMapContainer().getMap().removeBackgroundTile(mouseX, mouseY);
-		}
-		
-		else if (Editor.getMapState() == Map.State.FOREGROUND) {
-			currentEditor.getMapContainer().getMap().removeForegroundTile(mouseX, mouseY);
-		}
-		
-		else if (Editor.getMapState() == Map.State.COLLISIONS) {
-			currentEditor.getMapContainer().getMap().removeCollision(mouseX, mouseY);
-		}
+	public void addTile(int mouseX, int mouseY) {
+		mapContainer.getMap().add(getIndex(), mouseX, mouseY);
 	}
 	
-//	public EditableFile getFile() {
-//		return file;
-//	}
+	public void removeTile(int mouseX, int mouseY) {
+		mapContainer.getMap().remove(mouseX, mouseY);
+	}
 	
-	// exits the editor.
-	public static void dispose() {
-		currentEditor.frame.dispose();
+	// tileset stuff.
+	public void setTileset(String path) {
+		tilesetContainer.getTileset().setTileset(path);
+		tilesetContainer.repaint();
+	}
+	
+	public BufferedImage getTile(int index) {
+		return tilesetContainer.getTileset().getTile(index);
+	}
+	
+	public int getIndex() {
+		return tilesetContainer.getTileset().getSelectedTileIndex();
+	}
+	
+	// debug stuff.
+	public void toggleDebugMode() {
+		isDebugModeOn = !isDebugModeOn;
+		mapContainer.repaint();
+		tilesetContainer.repaint();
+	}
+	
+	public boolean isDebugModeOn() {
+		return isDebugModeOn;
+	}
+	
+	public void dispose() {
+		frame.dispose();
+		System.exit(0);
 	}
 	
 	private void initUI() {
 		mapContainer = new MapContainer();
 		tilesetContainer = new TilesetContainer();
 		
-		frame = new JFrame();
+		frame = new JFrame("Map Maker");
 		frame.setLayout(new FlowLayout());
 		
 		frame.setJMenuBar(new NavBar().getBar());
@@ -151,126 +138,21 @@ public class Editor extends WindowAdapter {
 		frame.setVisible(true);
 	}
 	
-	public static void setFile(String path) {
-		currentEditor.file.setFile(path);
-	}
-	
-	public static boolean fileHasUnsavedChanges() {
-		return currentEditor.file.hasUnsavedChanges();
-	}
-	
-	public static boolean fileExists() {
-		return currentEditor.file.exists();
-	}
-	
-	public static String getTilesetPath() {
-		return currentEditor.tilesetContainer.getTileset().getPath();
-	}
-	
-	public static int getMapWidth() {
-		return currentEditor.getMapContainer().getMap().getWidth();
-	}
-	
-	public static void setBackground(ArrayList<Tile> tiles) {
-		currentEditor.getMapContainer().getMap().setBackground(tiles);
-	}
-	
-	public static void setForeground(ArrayList<Tile> tiles) {
-		currentEditor.getMapContainer().getMap().setForeground(tiles);
-	}
-	
-	public static void setMapX(int x) {
-		currentEditor.getMapContainer().getMap().setMapX(x);
-	}
-	
-	public static void setMapY(int y) {
-		currentEditor.getMapContainer().getMap().setMapX(y);
-	}
-	
-	public static int getMapHeight() {
-		return currentEditor.getMapContainer().getMap().getHeight();
-	}
-	
-	public static int getMapX() {
-		return currentEditor.getMapContainer().getMap().getX();
-	}
-	
-	public static int getMapY() {
-		return currentEditor.getMapContainer().getMap().getY();
-	}
-	
-	public static ArrayList<Tile> getBackground() {
-		return currentEditor.getMapContainer().getMap().getBackground();
-	}
-	
-	public static ArrayList<Tile> getForeground() {
-		return currentEditor.getMapContainer().getMap().getForeground();
-	}
-	
-	// adds the open file to the frame title.
-	public static void addFileNameToTitle(String fileName) {
-		currentEditor.frame.setTitle(currentEditor.title + fileName);
-	}
-	
-	// sets the current editor to the one that's active.
-	@Override
-	public void windowGainedFocus(WindowEvent e) {
-		currentEditor = this;
-	}
-	
-	public static void setTrue() {
-		currentEditor.file.setTrue();
-	}
-	
-	public static int getSmallestX() {
-		return currentEditor.getMapContainer().getMap().getSmallestX();
-	}
-	
-	public static int getSmallestY() {
-		return currentEditor.getMapContainer().getMap().getSmallestY();
-	}
-	
-	public static int getBiggestX() {
-		return currentEditor.getMapContainer().getMap().getBiggestX();
-	}
-	
-	public static int getBiggestY() {
-		return currentEditor.getMapContainer().getMap().getBiggestY();
-	}
-	
-	public static Object[] options = {"Save", "Don't Save", "Cancel"};
 	// show "are you sure???" screen, if work is not saved.
 	@Override
 	public void windowClosing(WindowEvent e) {
-		if (file.hasUnsavedChanges()) {
-			int result =
-					JOptionPane.showOptionDialog(null,
-					"Do you want to save changes to " + file.getFilePath(),
-					"Map Maker",
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE,
-					null,
-					options,
-					null);
-			
-			if (result == JOptionPane.YES_OPTION)
-				file.finalSave();
-			
-			else if(result == JOptionPane.NO_OPTION)
-				frame.dispose();
+		int result =
+				JOptionPane.showOptionDialog(null,
+				"Do you want to retrieve map data before closing?",
+				"Map Maker",
+				JOptionPane.YES_NO_CANCEL_OPTION,
+				JOptionPane.QUESTION_MESSAGE, null, null, null);
+		
+		if (result == JOptionPane.YES_OPTION) {
+			System.out.println("Get Map Data");
+			frame.dispose();
+		} else if (result == JOptionPane.NO_OPTION) {
+			dispose();
 		}
-		
-		else frame.dispose();
-	}
-	
-	// edge case: when the last editor is closed, the program must end.
-	// otherwise the program will not terminate.
-	@Override
-	public void windowClosed(WindowEvent e) {
-		file.close();
-		
-		// if there is no current active editor, end the program.
-		if (!currentEditor.frame.isActive())
-			System.exit(0);
 	}
 }

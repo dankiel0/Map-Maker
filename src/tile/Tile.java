@@ -7,26 +7,45 @@ import ui.Editor;
 
 // a tile.
 public class Tile {
-	private double x;
-	private double y;
+	private int x;
+	private int y;
 	
-	private int index;
+	private int[] indices = {-1, -1};
+	private BufferedImage[] tiles = new BufferedImage[2];
 	
 	private boolean isSolid;
 	
-	private BufferedImage tile;
-	
-	public Tile(int x, int y, int tileIndex) {
+	public Tile(int x, int y) {
 		this.x = x;
 		this.y = y;
-		
-		index = tileIndex;
-		
-		tile = Editor.getTile(index);
 	}
 	
-	public int getIndex() {
-		return index;
+	public void addBackground(int index) {
+		indices[0] = index;
+		tiles[0] = Editor.getCurrentEditor().getTile(index);
+	}
+	
+	public void addForeground(int index) {
+		indices[1] = index;
+		
+		if (index != -1)
+			tiles[1] = Editor.getCurrentEditor().getTile(index);
+	}
+	
+	public int getBackgroundIndex() {
+		return indices[0];
+	}
+	
+	public int getForegroundIndex() {
+		return indices[1];
+	}
+	
+	public BufferedImage getBackgroundTile() {
+		return tiles[0];
+	}
+	
+	public BufferedImage getForegroundTile() {
+		return tiles[1];
 	}
 	
 	public double getX() {
@@ -37,15 +56,19 @@ public class Tile {
 		return y;
 	}
 	
-	public void setSolid(boolean solid) {
-		isSolid = solid;
-	}
-	
 	public boolean isSolid() {
 		return isSolid;
 	}
 	
+	public void setSolid(boolean solid) {
+		isSolid = solid;
+	}
+	
 	public void render(Graphics graphics, int offsetX, int offsetY) {
-		graphics.drawImage(tile, (int) (x + offsetX), (int) (y + offsetY), null);
+		if (tiles[0] != null)
+			graphics.drawImage(tiles[0], x + offsetX, y + offsetY, null);
+		
+		if (tiles[1] != null)
+			graphics.drawImage(tiles[1], x + offsetX, y + offsetY, null);
 	}
 }

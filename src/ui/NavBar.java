@@ -9,37 +9,53 @@ import javax.swing.JMenuItem;
 
 import file.FileUtil;
 import help.Help;
-import map.Map;
+import map.Map.State;
 
-public class NavBar implements ActionListener {
+public class NavBar {
 	private JMenuBar navBar = new JMenuBar();
 	
 	public NavBar() {
 		navBar.add(makeMenu("File",
-				makeMenuItem("Create New Map"),
-				makeMenuItem("Open Existing Map"),
+				makeMenuItem("Open Map", (ActionEvent e) -> {
+					DataProcessor.getInstance().displayOpenMap();
+				}),
+				makeMenuItem("Retrieve Map Data", (ActionEvent e) -> {
+					DataProcessor.getInstance().setSaveData(Editor.getCurrentEditor().getMapData());
+					DataProcessor.getInstance().displaySaveMap();
+				}),
 				null,
-				makeMenuItem("Open Tileset"),
+				makeMenuItem("Open Tileset", (ActionEvent e) -> {
+					FileUtil.getInstance().openTileset();
+				}),
 				null,
-				makeMenuItem("Save"),
-				makeMenuItem("Save As..."),
-				null,
-				makeMenuItem("Exit")));
+				makeMenuItem("Exit", (ActionEvent e) -> {
+					Editor.getCurrentEditor().dispose();
+				})));
 		
 		navBar.add(makeMenu("Edit",
-				makeMenuItem("Edit Collisions"),
-				null,
-				makeMenuItem("Edit Background"),
-				makeMenuItem("Edit Foreground")));
+				makeMenuItem("Edit Tiles", (ActionEvent e) -> {
+					Editor.getCurrentEditor().setState(State.TILES);
+				}),
+				makeMenuItem("Edit Collisions", (ActionEvent e) -> {
+					Editor.getCurrentEditor().setState(State.COLLISIONS);
+				})));
 		
 		navBar.add(makeMenu("View",
-				makeMenuItem("Explore Map"),
-				makeMenuItem("Display Full Map"),
-				makeMenuItem("Highlight/Un-Highlight Background"),
-				makeMenuItem("Highlight/Un-Highlight Foreground")));
+				makeMenuItem("Display Full Map", (ActionEvent e) -> {
+					System.out.println("Display Full Map");
+				}),
+				makeMenuItem("Explore Map", (ActionEvent e) -> {
+					System.out.println("Explore Map");
+				}),
+				null,
+				makeMenuItem("Show/Hide Debug", (ActionEvent e) -> {
+					Editor.getCurrentEditor().toggleDebugMode();
+				})));
 		
 		navBar.add(makeMenu("Help",
-				makeMenuItem("About Map Maker")));
+				makeMenuItem("About Map Maker", (ActionEvent e) -> {
+					Help.getInstance().display();
+				})));
 	}
 	
 	private JMenu makeMenu(String name, JMenuItem... items) {
@@ -53,68 +69,15 @@ public class NavBar implements ActionListener {
 		return menu;
 	}
 	
-	private JMenuItem makeMenuItem(String name) {
+	private JMenuItem makeMenuItem(String name, ActionListener actionListener) {
 		JMenuItem item = new JMenuItem(name);
 		
-		item.addActionListener(this);
+		item.addActionListener(actionListener);
 		
 		return item;
 	}
 	
 	public JMenuBar getBar() {
 		return navBar;
-	}
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
-		case "Create New Map":
-			new Editor();
-			break;
-		case "Open Existing Map":
-			FileUtil.getInstance().openMap();
-			break;
-		case "Open Tileset":
-			FileUtil.getInstance().openTileset();
-			break;
-		case "Save":
-			FileUtil.getInstance().save();
-			break;
-		case "Save As...":
-			FileUtil.getInstance().saveAs();
-			break;
-		case "Exit":
-			Editor.dispose();
-			break;
-		case "Edit Collisions":
-			Editor.setMapState(Map.State.COLLISIONS);
-			Editor.repaintMap();
-			break;
-		case "Edit Background":
-			Editor.setMapState(Map.State.BACKGROUND);
-			Editor.repaintMap();
-			break;
-		case "Edit Foreground":
-			Editor.setMapState(Map.State.FOREGROUND);
-			Editor.repaintMap();
-			break;
-		case "Explore Map":
-			System.out.println("Explore Map");
-			break;
-		case "Highlight/Un-Highlight Background":
-			Editor.highlightBackground();
-			break;
-		case "Highlight/Un-Highlight Foreground":
-			Editor.highlightForeground();
-			break;
-		case "Display Full Map":
-			System.out.println("Display Full Map");
-			break;
-		case "About Map Maker":
-			Help.getInstance().display();
-			break;
-		default:
-			break;
-		}
 	}
 }

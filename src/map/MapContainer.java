@@ -40,7 +40,10 @@ public class MapContainer extends JPanel {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		
-		map.render(graphics);
+		map.renderMap(graphics);
+		
+		if (Editor.getCurrentEditor().isDebugModeOn())
+			map.renderDebug(graphics);
 	}
 	
 	public Map getMap() {
@@ -53,8 +56,7 @@ public class MapContainer extends JPanel {
 		@Override
 		public void mousePressed(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				Editor.addTile(e.getX(), e.getY());
-				
+				Editor.getCurrentEditor().addTile(e.getX(), e.getY());
 				repaint();
 			}
 			
@@ -68,16 +70,15 @@ public class MapContainer extends JPanel {
 			}
 			
 			else if (SwingUtilities.isRightMouseButton(e)) {
-				Editor.removeTile(e.getX(), e.getY());
+				Editor.getCurrentEditor().removeTile(e.getX(), e.getY());
 				repaint();
 			}
-			Editor.setTrue();
 		}
 		
 		@Override
 		public void mouseDragged(MouseEvent e) {
 			if (SwingUtilities.isLeftMouseButton(e)) {
-				Editor.addTile(e.getX(), e.getY());
+				Editor.getCurrentEditor().addTile(e.getX(), e.getY());
 				repaint();
 			}
 			
@@ -92,10 +93,9 @@ public class MapContainer extends JPanel {
 			}
 			
 			else if (SwingUtilities.isRightMouseButton(e)) {
-				Editor.removeTile(e.getX(), e.getY());
+				Editor.getCurrentEditor().removeTile(e.getX(), e.getY());
 				repaint();
 			}
-			Editor.setTrue();
 		}
 	}
 }

@@ -10,6 +10,8 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import ui.Editor;
+
 public class TilesetContainer extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
@@ -39,7 +41,10 @@ public class TilesetContainer extends JPanel {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		
-		tileset.render(graphics);
+		tileset.renderTileset(graphics);
+		
+		if (Editor.getCurrentEditor().isDebugModeOn())
+			tileset.renderDebug(graphics);
 	}
 	
 	public Tileset getTileset() {
@@ -63,7 +68,7 @@ public class TilesetContainer extends JPanel {
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = tileset.tilesetLocation;
+				Point location = tileset.getLocation();
 				
 				offset.x = e.getX() - location.x;
 				offset.y = e.getY() - location.y;
@@ -85,7 +90,7 @@ public class TilesetContainer extends JPanel {
 			
 			// user can only drag with the middle mouse button
 			else if (SwingUtilities.isMiddleMouseButton(e)) {
-				Point location = tileset.tilesetLocation;
+				Point location = tileset.getLocation();
 				
 				location.x = e.getX() - offset.x;
 				location.y = e.getY() - offset.y;

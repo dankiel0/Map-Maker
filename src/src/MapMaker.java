@@ -10,13 +10,11 @@ import ui.Editor;
 public class MapMaker {
 	public static void main(String[] args) {
 		initLookAndFeel();
-		
-		new Editor();
-		
 		initAll();
 	}
 	
 	private static void initAll() {
+		Editor.getCurrentEditor();
 		FileUtil.getInstance();
 		Help.getInstance();
 	}
